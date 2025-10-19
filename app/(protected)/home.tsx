@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Text, TextInput, View, Button, ScrollView } from "react-native";
-
 import {
   usePrivy,
   useEmbeddedEthereumWallet,
@@ -8,7 +7,7 @@ import {
   PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
 import { PrivyUser } from "@privy-io/public-api";
-import EVMWalletActions from "./walletActions/EVMWalletActions";
+import EVMWalletActions from "@/components/walletActions/EVMWalletActions";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -29,7 +28,7 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   return x.type;
 };
 
-export const UserScreen = () => {
+export default function Home() {
   const [chainId, setChainId] = useState("1");
 
   const { logout, user } = usePrivy();
@@ -121,4 +120,4 @@ export const UserScreen = () => {
       </ScrollView>
     </ScrollView>
   );
-};
+}

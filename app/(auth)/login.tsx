@@ -1,7 +1,7 @@
 import { View } from "react-native";
-import PrivyUI from "./login/PrivyUI";
+import PrivyUI from "@/components/login/PrivyUI";
 
-export default function LoginScreen() {
+export default function Login() {
   return (
     <View
       style={{

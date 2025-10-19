@@ -1,11 +1,12 @@
 import { SafeAreaView, Text, View } from "react-native";
 import Constants from "expo-constants";
-import LoginScreen from "@/components/LoginScreen";
 import { usePrivy } from "@privy-io/expo";
-import { UserScreen } from "@/components/UserScreen";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  const { user } = usePrivy();
+  const { user, isReady } = usePrivy();
+
+  // Validate configuration
   if ((Constants.expoConfig?.extra?.privyAppId as string).length !== 25) {
     return (
       <SafeAreaView>
@@ -40,5 +41,16 @@ export default function Index() {
       </SafeAreaView>
     );
   }
-  return !user ? <LoginScreen /> : <UserScreen />;
+
+  // Wait for auth to be ready
+  if (!isReady) {
+    return null; // Or a loading spinner
+  }
+
+  // Redirect based on authentication state
+  if (user) {
+    return <Redirect href="/(protected)/home" />;
+  }
+
+  return <Redirect href="/(auth)/login" />;
 }
