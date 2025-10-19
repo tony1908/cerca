@@ -1,15 +1,40 @@
 import { useLogin } from "@privy-io/expo/ui";
-import { Button, View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { Colors } from "@/constants/Colors";
+import { typography, spacing, borderRadius, shadows } from "@/constants/SoftUIStyles";
+import { useColorScheme } from "react-native";
 
 export default function PrivyUI() {
   const [error, setError] = useState("");
+  const colorScheme = useColorScheme() ?? 'dark';
+  const colors = Colors[colorScheme];
 
   const { login } = useLogin();
+
   return (
-    <View>
-      <Button
-        title="Login with Privy UIs"
+    <View style={{ alignItems: 'center' }}>
+      <Text style={[
+        typography.bodyText,
+        {
+          color: colors.primaryText,
+          marginBottom: spacing.xl,
+          textAlign: 'center'
+        }
+      ]}>
+        Sign in to continue
+      </Text>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: colors.accent,
+          paddingVertical: spacing.lg,
+          paddingHorizontal: spacing.xxxl,
+          borderRadius: borderRadius.button,
+          minWidth: 200,
+          alignItems: 'center',
+          ...shadows.convex.dark
+        }}
         onPress={() => {
           login({ loginMethods: ["email"] })
             .then((session) => {
@@ -19,8 +44,37 @@ export default function PrivyUI() {
               setError(JSON.stringify(err.error) as string);
             });
         }}
-      />
-      {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
+      >
+        <Text style={[
+          typography.bodyText,
+          {
+            color: colors.transactionText,
+            fontWeight: '600'
+          }
+        ]}>
+          Continue with Email
+        </Text>
+      </TouchableOpacity>
+
+      {error && (
+        <View style={{
+          marginTop: spacing.lg,
+          padding: spacing.md,
+          backgroundColor: 'rgba(255, 59, 48, 0.1)',
+          borderRadius: borderRadius.small,
+          maxWidth: '100%'
+        }}>
+          <Text style={[
+            typography.subtitle,
+            {
+              color: '#FF3B30',
+              textAlign: 'center'
+            }
+          ]}>
+            {error}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }

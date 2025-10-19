@@ -33,7 +33,7 @@
     "extra": {
       "privyAppId": "",
       "privyClientId": "",
-      "passkeyAssociatedDomain": "https://<your-associated-domain>"
+      "passkeyAssociatedDomain": ""
     },
     "plugins": [
       "expo-router",

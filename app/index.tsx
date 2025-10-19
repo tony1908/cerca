@@ -1,23 +1,39 @@
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, Text, View, ActivityIndicator } from "react-native";
 import Constants from "expo-constants";
 import { usePrivy } from "@privy-io/expo";
 import { Redirect } from "expo-router";
+import { Colors } from "@/constants/Colors";
+import { commonStyles, typography, spacing } from "@/constants/SoftUIStyles";
+import { useColorScheme } from "react-native";
 
 export default function Index() {
   const { user, isReady } = usePrivy();
+  const colorScheme = useColorScheme() ?? 'dark';
+  const colors = Colors[colorScheme];
 
   // Validate configuration
   if ((Constants.expoConfig?.extra?.privyAppId as string).length !== 25) {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={[commonStyles.container, { justifyContent: 'center' }]}>
         <View
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={[
+            commonStyles.card,
+            {
+              backgroundColor: colors.uiElements,
+              alignItems: "center",
+              padding: spacing.xxxl,
+            }
+          ]}
         >
-          <Text>You have not set a valid `privyAppId` in app.json</Text>
+          <Text style={[
+            typography.bodyText,
+            {
+              color: colors.primaryText,
+              textAlign: 'center'
+            }
+          ]}>
+            You have not set a valid `privyAppId` in app.json
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -28,15 +44,26 @@ export default function Index() {
     )
   ) {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={[commonStyles.container, { justifyContent: 'center' }]}>
         <View
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={[
+            commonStyles.card,
+            {
+              backgroundColor: colors.uiElements,
+              alignItems: "center",
+              padding: spacing.xxxl,
+            }
+          ]}
         >
-          <Text>You have not set a valid `privyClientId` in app.json</Text>
+          <Text style={[
+            typography.bodyText,
+            {
+              color: colors.primaryText,
+              textAlign: 'center'
+            }
+          ]}>
+            You have not set a valid `privyClientId` in app.json
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -44,7 +71,20 @@ export default function Index() {
 
   // Wait for auth to be ready
   if (!isReady) {
-    return null; // Or a loading spinner
+    return (
+      <SafeAreaView style={[commonStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={colors.accent} />
+        <Text style={[
+          typography.subtitle,
+          {
+            color: colors.secondaryText,
+            marginTop: spacing.lg
+          }
+        ]}>
+          Loading...
+        </Text>
+      </SafeAreaView>
+    );
   }
 
   // Redirect based on authentication state

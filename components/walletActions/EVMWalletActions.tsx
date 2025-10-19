@@ -1,9 +1,15 @@
 import { useEmbeddedEthereumWallet } from "@privy-io/expo";
 import { useState } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { typography, spacing, borderRadius } from "@/constants/SoftUIStyles";
+import { useColorScheme } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function EVMWalletActions() {
   const [result, setResult] = useState<string | null>(null);
+  const colorScheme = useColorScheme() ?? 'dark';
+  const colors = Colors[colorScheme];
   const { wallets } = useEmbeddedEthereumWallet();
   const wallet = wallets?.[0];
 
@@ -54,16 +60,61 @@ export default function EVMWalletActions() {
     });
     setResult(JSON.stringify(response));
   };
+
+  const actionButtons = [
+    { title: "Sign Message", icon: "create-outline", onPress: signMessage },
+    { title: "Sign Transaction", icon: "document-text-outline", onPress: signTransaction },
+    { title: "Send Transaction", icon: "send-outline", onPress: signAndSendTransaction },
+  ];
+
   return (
-    <View>
-      <Text>EVM Wallet Actions</Text>
-      <Button title="Sign Message" onPress={signMessage} />
-      <Button title="Sign Transaction" onPress={signTransaction} />
-      <Button
-        title="Sign And Send Transaction"
-        onPress={signAndSendTransaction}
-      />
-      {result && <Text>{result}</Text>}
+    <View style={{ marginBottom: spacing.xl }}>
+      <Text style={[
+        typography.bodyText,
+        { color: colors.primaryText, marginBottom: spacing.lg }
+      ]}>
+        Wallet Actions
+      </Text>
+
+      <View style={{ gap: spacing.md }}>
+        {actionButtons.map((button, index) => (
+          <TouchableOpacity
+            key={index}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: colors.mainBackground,
+              padding: spacing.lg,
+              borderRadius: borderRadius.medium,
+            }}
+            onPress={button.onPress}
+          >
+            <Ionicons name={button.icon as any} size={20} color={colors.accent} />
+            <Text style={[
+              typography.bodyText,
+              { color: colors.primaryText, marginLeft: spacing.md }
+            ]}>
+              {button.title}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {result && (
+        <View style={{
+          marginTop: spacing.lg,
+          padding: spacing.md,
+          backgroundColor: colors.mainBackground,
+          borderRadius: borderRadius.small,
+        }}>
+          <Text style={[
+            typography.subtitle,
+            { color: colors.secondaryText }
+          ]} numberOfLines={3}>
+            {result}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
