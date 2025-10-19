@@ -90,6 +90,59 @@ Root layout wraps app in this provider order (outer to inner):
 
 [metro.config.js](metro.config.js) includes custom resolver for the `jose` package, forcing browser exports for React Native compatibility.
 
+## Bottom Sheet Modals
+
+The app uses `@gorhom/bottom-sheet` for gesture-driven modal interactions. All bottom sheets are wrapped with Soft UI styling.
+
+### StyledBottomSheet Component
+
+Reusable wrapper that applies the design system to any bottom sheet:
+
+```typescript
+import StyledBottomSheet from '@/components/StyledBottomSheet';
+
+<StyledBottomSheet
+  title="Send Ethereum"
+  isOpen={isOpen}
+  onClose={onClose}
+  snapPoints={['60%', '90%']}
+>
+  {/* Content here */}
+</StyledBottomSheet>
+```
+
+### SendModal
+
+Modal for sending cryptocurrency. Handles recipient address and amount input with validation.
+
+```typescript
+import SendModal from '@/components/SendModal';
+
+const [sendOpen, setSendOpen] = useState(false);
+
+<SendModal
+  isOpen={sendOpen}
+  onClose={() => setSendOpen(false)}
+  walletAddress={account?.address}
+/>
+```
+
+### ReceiveModal
+
+Modal for receiving cryptocurrency. Displays QR code and wallet address with copy/share functionality.
+
+```typescript
+import ReceiveModal from '@/components/ReceiveModal';
+
+const [receiveOpen, setReceiveOpen] = useState(false);
+
+<ReceiveModal
+  isOpen={receiveOpen}
+  onClose={() => setReceiveOpen(false)}
+  walletAddress={account?.address}
+/>
+```
+
 ## Key Patterns
 
 ### Embedded Wallet Usage
@@ -128,11 +181,16 @@ Example implementation in [app/(protected)/home.tsx:38-51](app/(protected)/home.
 - **@tanstack/react-query** - Async state management
 - **viem** - Ethereum library (pinned to 2.32.0)
 - **@solana/web3.js** - Solana support (included but not actively used in current implementation)
+- **@gorhom/bottom-sheet** - Gesture-driven bottom sheet modals for Send/Receive flows
+- **react-native-qrcode-styled** - QR code generation for wallet addresses
 
 ## Component Organization
 
 - `components/login/` - Authentication UI components (SMS, OAuth, Passkey, PrivyUI)
 - `components/walletActions/` - Wallet interaction components (EVM operations)
+- `components/StyledBottomSheet.tsx` - Reusable bottom sheet wrapper with Soft UI styling
+- `components/SendModal.tsx` - Send cryptocurrency modal with recipient and amount inputs
+- `components/ReceiveModal.tsx` - Receive modal with QR code and address sharing
 - `hooks/` - Custom React hooks (color scheme, theme)
 
 ## Design System

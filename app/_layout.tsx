@@ -10,6 +10,7 @@ import {
 import { useFonts } from "expo-font";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const queryClient = new QueryClient();
 
@@ -43,21 +44,23 @@ export default function RootLayout() {
     Inter_600SemiBold,
   });
   return (
-    <QueryClientProvider client={queryClient}>
-      <PrivyProvider
-        appId={Constants.expoConfig?.extra?.privyAppId}
-        clientId={Constants.expoConfig?.extra?.privyClientId}
-        config={{
-          embedded: {
-              ethereum: {
-                  createOnLogin: 'users-without-wallets',
-              },
-          },
-      }}
-      >
-        <NavigationGuard />
-        <PrivyElements />
-      </PrivyProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <PrivyProvider
+          appId={Constants.expoConfig?.extra?.privyAppId}
+          clientId={Constants.expoConfig?.extra?.privyClientId}
+          config={{
+            embedded: {
+                ethereum: {
+                    createOnLogin: 'users-without-wallets',
+                },
+            },
+        }}
+        >
+          <NavigationGuard />
+          <PrivyElements />
+        </PrivyProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
