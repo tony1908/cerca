@@ -1,12 +1,13 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, ImageBackground } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { commonStyles, typography, spacing, borderRadius, shadows } from "@/constants/SoftUIStyles";
+import { typography, spacing, borderRadius, shadows } from "@/constants/SoftUIStyles";
 import { useColorScheme } from "react-native";
 import { useState } from "react";
 import { useLoginWithEmail } from "@privy-io/expo";
 import { Ionicons } from "@expo/vector-icons";
 import StyledBottomSheet from "@/components/StyledBottomSheet";
 import OTPInput from "@/components/OTPInput";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Login() {
   const colorScheme = useColorScheme() ?? 'dark';
@@ -67,71 +68,116 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {/* Welcome Header */}
-        <View style={{ marginBottom: spacing.xxxl, alignItems: 'center' }}>
+    <ImageBackground
+      source={require('@/assets/images/home.png')}
+      style={{ flex: 1, width: '100%', height: '100%' }}
+      resizeMode="cover"
+    >
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.9)']}
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          paddingVertical: spacing.xxxl * 2,
+          paddingHorizontal: spacing.xl,
+        }}
+      >
+        {/* Top Section - Logo */}
+        <View style={{ alignItems: 'center', marginTop: spacing.xxxl }}>
           <Text style={[
             typography.hero,
             {
               color: colors.accent,
-              textAlign: 'center',
-              marginBottom: spacing.md,
-              fontSize: 48
+              fontSize: 42,
+              letterSpacing: 2,
             }
           ]}>
             Cerca
           </Text>
-          <Text style={[
-            typography.subtitle,
-            {
-              color: colors.secondaryText,
-              textAlign: 'center',
-              paddingHorizontal: spacing.xxxl
-            }
-          ]}>
-            Your gateway to decentralized finance
-          </Text>
         </View>
 
-        {/* Illustration or Icon */}
-        <View style={{
-          width: 120,
-          height: 120,
-          borderRadius: 60,
-          backgroundColor: colors.uiElements,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: spacing.xxxl,
-          ...shadows.convex.dark
-        }}>
-          <Ionicons name="wallet" size={60} color={colors.accent} />
-        </View>
+        {/* Bottom Section - Content */}
+        <View>
+          {/* Main Headline */}
+          <View style={{ marginBottom: spacing.xxxl }}>
+            <Text style={[
+              typography.hero,
+              {
+                color: '#FFFFFF',
+                fontSize: 36,
+                textAlign: 'center',
+                marginBottom: spacing.md,
+                lineHeight: 44,
+              }
+            ]}>
+              Smart Finance{'\n'}Brightest Future
+            </Text>
 
-        {/* Sign In Button */}
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.accent,
-            paddingVertical: spacing.xl,
-            paddingHorizontal: spacing.xxxl * 2,
-            borderRadius: borderRadius.button,
+            <Text style={[
+              typography.bodyText,
+              {
+                color: 'rgba(255, 255, 255, 0.8)',
+                textAlign: 'center',
+                fontSize: 16,
+                lineHeight: 24,
+              }
+            ]}>
+              Grow Your Wealth Effortlessly.{'\n'}Your Financial Future Starts Here.
+            </Text>
+          </View>
+
+          {/* Pagination Dots */}
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
-            minWidth: 200,
-            ...shadows.convex.dark
-          }}
-          onPress={() => setIsModalOpen(true)}
-        >
-          <Text style={[
-            typography.primaryTitle,
-            {
-              color: colors.transactionText,
-              fontWeight: '600'
-            }
-          ]}>
-            Sign In
-          </Text>
-        </TouchableOpacity>
-      </View>
+            marginBottom: spacing.xxl,
+            gap: spacing.sm,
+          }}>
+            <View style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: colors.accent,
+            }} />
+            <View style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            }} />
+            <View style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            }} />
+          </View>
+
+          {/* Get Started Button */}
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.accent,
+              paddingVertical: spacing.xl,
+              borderRadius: borderRadius.extraLarge,
+              alignItems: 'center',
+              ...shadows.convex.dark,
+            }}
+            onPress={() => setIsModalOpen(true)}
+          >
+            <Text style={[
+              typography.primaryTitle,
+              {
+                color: colors.transactionText,
+                fontWeight: '600',
+                fontSize: 18,
+              }
+            ]}>
+              Let's Get Started
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
 
       {/* Email Login Bottom Sheet */}
       <StyledBottomSheet
@@ -306,6 +352,6 @@ export default function Login() {
           </View>
         )}
       </StyledBottomSheet>
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
