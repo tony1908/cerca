@@ -94,7 +94,6 @@ export default function OTPInput({ length = 6, value, onChange }: OTPInputProps)
               color: colors.primaryText,
               borderWidth: 2,
               borderColor: focusedIndex === index ? colors.accent : 'transparent',
-              ...typography.hero,
             },
           ]}
         />
@@ -106,16 +105,15 @@ export default function OTPInput({ length = 6, value, onChange }: OTPInputProps)
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     gap: spacing.sm,
   },
   input: {
-    flex: 1,
-    aspectRatio: 1,
+    width: 48,
+    height: 56,
     borderRadius: borderRadius.medium,
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
-    maxWidth: 50,
   },
 });
