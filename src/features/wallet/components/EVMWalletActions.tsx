@@ -1,9 +1,8 @@
 import { useEmbeddedEthereumWallet } from "@privy-io/expo";
 import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { typography, spacing, borderRadius } from "@/constants/SoftUIStyles";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
+import { Colors, typography, spacing, borderRadius } from "@/src/shared/design/theme";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function EVMWalletActions() {

@@ -1,9 +1,8 @@
 import { useLogin } from "@privy-io/expo/ui";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { Colors } from "@/constants/Colors";
-import { typography, spacing, borderRadius, shadows } from "@/constants/SoftUIStyles";
-import { useColorScheme } from "react-native";
+import { Colors, typography, spacing, borderRadius, shadows } from "@/src/shared/design/theme";
+import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
 
 export default function PrivyUI() {
   const [error, setError] = useState("");

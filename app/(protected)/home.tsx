@@ -7,10 +7,9 @@ import {
   PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
 import { PrivyUser } from "@privy-io/public-api";
-import EVMWalletActions from "@/components/walletActions/EVMWalletActions";
-import { Colors } from "@/constants/Colors";
-import { commonStyles, typography, spacing, borderRadius, shadows } from "@/constants/SoftUIStyles";
-import { useColorScheme } from "react-native";
+import EVMWalletActions from "@/src/features/wallet/components/EVMWalletActions";
+import { Colors, commonStyles, typography, spacing, borderRadius, shadows } from "@/src/shared/design/theme";
+import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
 import { Ionicons } from "@expo/vector-icons";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {

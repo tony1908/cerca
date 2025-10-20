@@ -2,9 +2,8 @@ import { SafeAreaView, Text, View, ActivityIndicator } from "react-native";
 import Constants from "expo-constants";
 import { usePrivy } from "@privy-io/expo";
 import { Redirect } from "expo-router";
-import { Colors } from "@/constants/Colors";
-import { commonStyles, typography, spacing } from "@/constants/SoftUIStyles";
-import { useColorScheme } from "react-native";
+import { Colors, commonStyles, typography, spacing } from "@/src/shared/design/theme";
+import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
 
 export default function Index() {
   const { user, isReady } = usePrivy();
