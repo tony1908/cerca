@@ -7,6 +7,21 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@features/*": [
+        "./src/features/*"
+      ],
+      "@shared/*": [
+        "./src/shared/*"
+      ],
+      "@navigation/*": [
+        "./src/navigation/*"
+      ],
+      "@providers/*": [
+        "./src/providers/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
       ]
     }
   },
