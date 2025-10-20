@@ -31,8 +31,8 @@
       "package": "dev.tony.example"
     },
     "extra": {
-      "privyAppId": "",
-      "privyClientId": "client-",
+      "privyAppId": "cmgiv4ha100blkw0cez06akik",
+      "privyClientId": "client-WY6RbAzpczPfXahjGXHNmEUBBD66qwrDitWpFgCo1AT2V",
       "passkeyAssociatedDomain": "https://<your-associated-domain>"
     },
     "plugins": [

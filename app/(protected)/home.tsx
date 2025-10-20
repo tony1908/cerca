@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { Text, TextInput, View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import { Text, TextInput, View, ScrollView, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   usePrivy,
   useEmbeddedEthereumWallet,
@@ -35,6 +36,7 @@ export default function Home() {
   const [chainId, setChainId] = useState("1");
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
+  const insets = useSafeAreaInsets();
 
   const { logout, user } = usePrivy();
   const { wallets } = useEmbeddedEthereumWallet();
@@ -60,7 +62,7 @@ export default function Home() {
   }
 
   return (
-    <SafeAreaView style={[commonStyles.container, { paddingBottom: 100 }]}>
+    <View style={[commonStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom + 90 }]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
         {/* Header Section */}
         <View style={{ marginBottom: spacing.xl }}>
@@ -269,6 +271,6 @@ export default function Home() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

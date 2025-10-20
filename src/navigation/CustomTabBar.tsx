@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, usePathname } from 'expo-router';
 import { useColorScheme } from '@/src/shared/hooks/useColorScheme';
@@ -16,17 +17,13 @@ export default function CustomTabBar() {
   const colors = Colors[colorScheme];
   const router = useRouter();
   const pathname = usePathname();
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={[
-      commonStyles.tabBar,
+      styles.tabBarContainer,
       {
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-        height: 70,
-        justifyContent: 'space-around',
+        bottom: insets.bottom + 20,
       }
     ]}>
       {tabs.map((tab, index) => {
@@ -52,3 +49,16 @@ export default function CustomTabBar() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+    // No background, no border, no shadows - just transparent container
+  },
+});

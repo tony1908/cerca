@@ -9,7 +9,7 @@ export default function ProtectedLayout() {
   const colors = Colors[colorScheme];
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.mainBackground }}>
+    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
       <Stack>
         <Stack.Screen
           name="home"
