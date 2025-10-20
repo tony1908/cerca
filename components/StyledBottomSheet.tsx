@@ -59,7 +59,7 @@ export default function StyledBottomSheet({
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           paddingHorizontal: spacing.xl,
           paddingTop: spacing.lg,
           paddingBottom: spacing.xl,
@@ -77,7 +77,7 @@ export default function StyledBottomSheet({
             size={24}
             color={colors.secondaryText}
             onPress={onClose}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', position: 'absolute', right: spacing.xl }}
           />
         </View>
 
