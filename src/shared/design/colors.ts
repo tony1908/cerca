@@ -4,7 +4,7 @@
  */
 
 const tintColorLight = '#0a7ea4';
-const tintColorDark = '#FADADD'; // Pale pink accent
+const tintColorDark = '#fcc2c3'; // Pink accent
 
 export const Colors = {
   light: {
@@ -17,7 +17,7 @@ export const Colors = {
     // Custom color palette
     mainBackground: '#F2F2F7',
     uiElements: '#FFFFFF',
-    accent: '#FADADD',
+    accent: '#fcc2c3',
     contentBackground: '#F2F2F7',
     primaryText: '#000000',
     secondaryText: '#8E8E93',
@@ -25,15 +25,15 @@ export const Colors = {
   },
   dark: {
     text: '#FFFFFF',
-    background: '#1B1B1D',
+    background: '#060606',
     tint: tintColorDark,
     icon: '#8E8E93',
     tabIconDefault: '#8E8E93',
     tabIconSelected: tintColorDark,
     // Custom color palette
-    mainBackground: '#1B1B1D',
+    mainBackground: '#060606',
     uiElements: '#2C2C2E',
-    accent: '#FADADD',
+    accent: '#fcc2c3',
     contentBackground: '#F2F2F7',
     primaryText: '#FFFFFF',
     secondaryText: '#8E8E93',

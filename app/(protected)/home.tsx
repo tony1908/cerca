@@ -1,61 +1,60 @@
-import { useState, useCallback } from "react";
-import { Text, TextInput, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  usePrivy,
-  useEmbeddedEthereumWallet,
-  getUserEmbeddedEthereumWallet,
-  PrivyEmbeddedWalletProvider,
-} from "@privy-io/expo";
-import { PrivyUser } from "@privy-io/public-api";
-import EVMWalletActions from "@/src/features/wallet/components/EVMWalletActions";
+import { usePrivy } from "@privy-io/expo";
+import { Ionicons } from "@expo/vector-icons";
 import { Colors, commonStyles, typography, spacing, borderRadius, shadows } from "@/src/shared/design/theme";
 import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
-import { Ionicons } from "@expo/vector-icons";
-
-const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
-  if (x.type === "phone") {
-    return x.phoneNumber;
-  }
-  if (x.type === "email" || x.type === "wallet") {
-    return x.address;
-  }
-
-  if (x.type === "twitter_oauth" || x.type === "tiktok_oauth") {
-    return x.username;
-  }
-
-  if (x.type === "custom_auth") {
-    return x.custom_user_id;
-  }
-
-  return x.type;
-};
+import CreditLineCard from "@/src/shared/components/CreditLineCard";
+import LoanCard from "@/src/shared/components/LoanCard";
+import TransactionRow from "@/src/shared/components/TransactionRow";
 
 export default function Home() {
-  const [chainId, setChainId] = useState("1");
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
   const insets = useSafeAreaInsets();
+  const { user } = usePrivy();
 
-  const { logout, user } = usePrivy();
-  const { wallets } = useEmbeddedEthereumWallet();
-  const account = getUserEmbeddedEthereumWallet(user);
+  // Mock data - will be replaced with real data from API
+  const creditLine = {
+    totalAmount: 500,
+    availableAmount: 350,
+    usedAmount: 150,
+    nextPaymentDue: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+  };
 
-  const switchChain = useCallback(
-    async (provider: PrivyEmbeddedWalletProvider, id: string) => {
-      try {
-        await provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: id }],
-        });
-        alert(`Chain switched to ${id} successfully`);
-      } catch (e) {
-        console.error(e);
-      }
+  const activeLoans = [
+    {
+      id: '1',
+      amount: 100,
+      serviceName: 'CFE - Electricity',
+      dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      status: 'active' as const,
     },
-    [account?.address]
-  );
+    {
+      id: '2',
+      amount: 50,
+      serviceName: 'Telmex - Internet',
+      dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+      status: 'active' as const,
+    },
+  ];
+
+  const recentTransactions = [
+    {
+      id: '1',
+      type: 'bill_payment' as const,
+      amount: 100,
+      description: 'CFE Bill Payment',
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    },
+    {
+      id: '2',
+      type: 'loan_disbursement' as const,
+      amount: 100,
+      description: 'Loan Approved',
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    },
+  ];
 
   if (!user) {
     return null;
@@ -64,213 +63,141 @@ export default function Home() {
   return (
     <View style={[commonStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom + 90 }]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
-        {/* Header Section */}
-        <View style={{ marginBottom: spacing.xl }}>
-          <Text style={[
-            typography.primaryTitle,
-            { color: colors.primaryText }
-          ]}>
-            Hello {user?.linked_accounts[0] ? toMainIdentifier(user.linked_accounts[0]).split('@')[0] : 'User'}
-          </Text>
-          <Text style={[
-            typography.subtitle,
-            { color: colors.secondaryText, marginTop: spacing.xs }
-          ]}>
-            Welcome Back
-          </Text>
+        <View style={{ marginBottom: spacing.xxxl }}>
+          
         </View>
+        {/* Credit Line Card */}
+        <CreditLineCard {...creditLine} />
 
-        {/* Main Wallet Card */}
-        {account?.address && (
-          <View style={[
-            commonStyles.accentCard,
-            { marginBottom: spacing.xxl }
-          ]}>
-            <Text style={[
-              typography.subtitle,
-              { color: colors.transactionText, marginBottom: spacing.sm }
-            ]}>
-              ETHEREUM WALLET
-            </Text>
-            <Text style={[
-              typography.hero,
-              { color: colors.transactionText, marginBottom: spacing.md }
-            ]}>
-              $0.00
-            </Text>
-            <Text style={[
-              typography.bodyText,
-              { color: colors.transactionText, opacity: 0.8 }
-            ]} numberOfLines={1}>
-              {account.address.slice(0, 6)}...{account.address.slice(-4)}
-            </Text>
-          </View>
-        )}
+        {/* Quick Actions */}
+        <View style={{ marginBottom: spacing.xxxl }}>
+          <Text style={[typography.sectionHeader, { color: colors.primaryText, marginBottom: spacing.lg }]}>
+            Quick Actions
+          </Text>
 
-        {/* Action Buttons Row */}
-        <View style={[
-          commonStyles.rowSpaceBetween,
-          { marginBottom: spacing.xxl, paddingHorizontal: spacing.xl }
-        ]}>
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity style={commonStyles.circularButton}>
-              <Ionicons name="arrow-up" size={24} color={colors.accent} />
-            </TouchableOpacity>
-            <Text style={[
-              typography.subtitle,
-              { color: colors.secondaryText, marginTop: spacing.sm }
-            ]}>
-              Send
-            </Text>
-          </View>
-
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity style={commonStyles.circularButton}>
-              <Ionicons name="arrow-down" size={24} color={colors.accent} />
-            </TouchableOpacity>
-            <Text style={[
-              typography.subtitle,
-              { color: colors.secondaryText, marginTop: spacing.sm }
-            ]}>
-              Receive
-            </Text>
-          </View>
-
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity style={commonStyles.circularButton}>
-              <Ionicons name="swap-horizontal" size={24} color={colors.accent} />
-            </TouchableOpacity>
-            <Text style={[
-              typography.subtitle,
-              { color: colors.secondaryText, marginTop: spacing.sm }
-            ]}>
-              Swap
-            </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }}>
+            <QuickActionButton
+              icon="add-circle"
+              title="Request Loan"
+              colors={colors}
+              onPress={() => {}}
+            />
+            <QuickActionButton
+              icon="cash"
+              title="Repay"
+              colors={colors}
+              onPress={() => {}}
+            />
+            <QuickActionButton
+              icon="wallet"
+              title="Wallet"
+              colors={colors}
+              onPress={() => {}}
+            />
           </View>
         </View>
 
-        {/* Transactions Section */}
-        <View style={{ marginBottom: spacing.xl }}>
-          <Text style={[
-            typography.sectionHeader,
-            { color: colors.primaryText, marginBottom: spacing.lg }
-          ]}>
-            Transactions
-          </Text>
-
-          {/* Sample Transaction Items */}
-          <View style={commonStyles.lightCard}>
-            <View style={commonStyles.rowSpaceBetween}>
-              <View style={commonStyles.row}>
-                <View style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: colors.accent,
-                  marginRight: spacing.md,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <Ionicons name="swap-horizontal" size={20} color={colors.transactionText} />
-                </View>
-                <View>
-                  <Text style={[typography.listItemTitle, { color: colors.transactionText }]}>
-                    Swap ETH
-                  </Text>
-                  <Text style={[typography.subtitle, { color: colors.secondaryText }]}>
-                    2 hours ago
-                  </Text>
-                </View>
-              </View>
-              <Text style={[typography.listItemTitle, { color: colors.transactionText }]}>
-                -0.05 ETH
+        {/* Active Loans */}
+        {activeLoans.length > 0 && (
+          <View style={{ marginBottom: spacing.xxxl }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.lg }}>
+              <Text style={[typography.sectionHeader, { color: colors.primaryText }]}>
+                Active Loans
               </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Settings Section */}
-        <View style={[
-          commonStyles.card,
-          { backgroundColor: colors.uiElements }
-        ]}>
-          <Text style={[
-            typography.sectionHeader,
-            { color: colors.primaryText, marginBottom: spacing.lg }
-          ]}>
-            Settings
-          </Text>
-
-          {/* Chain Switch */}
-          <View style={{ marginBottom: spacing.xl }}>
-            <Text style={[
-              typography.bodyText,
-              { color: colors.primaryText, marginBottom: spacing.md }
-            ]}>
-              Network
-            </Text>
-            <View style={commonStyles.row}>
-              <TextInput
-                value={chainId}
-                onChangeText={setChainId}
-                placeholder="Chain ID"
-                placeholderTextColor={colors.secondaryText}
-                style={[
-                  {
-                    flex: 1,
-                    backgroundColor: colors.mainBackground,
-                    borderRadius: borderRadius.medium,
-                    padding: spacing.md,
-                    color: colors.primaryText,
-                    marginRight: spacing.md,
-                    ...typography.bodyText
-                  }
-                ]}
-              />
-              <TouchableOpacity
-                style={{
-                  backgroundColor: colors.accent,
-                  paddingHorizontal: spacing.lg,
-                  paddingVertical: spacing.md,
-                  borderRadius: borderRadius.medium,
-                }}
-                onPress={async () =>
-                  switchChain(await wallets[0].getProvider(), chainId)
-                }
-              >
-                <Text style={[
-                  typography.bodyText,
-                  { color: colors.transactionText, fontWeight: '600' }
-                ]}>
-                  Switch
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={[typography.subtitle, { color: colors.accent }]}>
+                  View All
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {activeLoans.map((loan) => (
+              <LoanCard
+                key={loan.id}
+                amount={loan.amount}
+                serviceName={loan.serviceName}
+                dueDate={loan.dueDate}
+                status={loan.status}
+                onPress={() => {}}
+              />
+            ))}
+          </View>
+        )}
+
+        {/* Recent Activity */}
+        <View style={{ marginBottom: spacing.xl }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.lg }}>
+            <Text style={[typography.sectionHeader, { color: colors.primaryText }]}>
+              Recent Activity
+            </Text>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={[typography.subtitle, { color: colors.accent }]}>
+                View All
+              </Text>
+            </TouchableOpacity>
           </View>
 
-          <EVMWalletActions />
+          {recentTransactions.map((transaction) => (
+            <TransactionRow
+              key={transaction.id}
+              type={transaction.type}
+              amount={transaction.amount}
+              description={transaction.description}
+              timestamp={transaction.timestamp}
+              onPress={() => {}}
+            />
+          ))}
+        </View>
 
-          {/* Logout Button */}
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.mainBackground,
-              padding: spacing.lg,
-              borderRadius: borderRadius.large,
-              alignItems: 'center',
-              marginTop: spacing.xl,
-              ...shadows.concave.dark
-            }}
-            onPress={logout}
-          >
-            <Text style={[
-              typography.bodyText,
-              { color: colors.accent, fontWeight: '600' }
-            ]}>
-              Sign Out
+        {/* Help Banner */}
+        <View style={[
+          shadows.standard,
+          {
+            backgroundColor: colors.uiElements,
+            borderRadius: borderRadius.medium,
+            padding: spacing.lg,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }
+        ]}>
+          <Ionicons name="help-circle" size={24} color={colors.accent} style={{ marginRight: spacing.md }} />
+          <View style={{ flex: 1 }}>
+            <Text style={[typography.bodyText, { color: colors.primaryText, marginBottom: spacing.xs }]}>
+              Need Help?
             </Text>
-          </TouchableOpacity>
+            <Text style={[typography.subtitle, { color: colors.secondaryText }]}>
+              Contact our support team
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.secondaryText} />
         </View>
       </ScrollView>
     </View>
+  );
+}
+
+function QuickActionButton({ icon, title, colors, onPress }: any) {
+  return (
+    <TouchableOpacity
+      style={[
+        shadows.standard,
+        {
+          flex: 1,
+          backgroundColor: colors.uiElements,
+          borderRadius: borderRadius.medium,
+          padding: spacing.lg,
+          alignItems: 'center',
+          justifyContent: 'center',
+          aspectRatio: 1,
+        }
+      ]}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
+      <Ionicons name={icon} size={32} color={colors.accent} style={{ marginBottom: spacing.sm }} />
+      <Text style={[typography.subtitle, { color: colors.primaryText, textAlign: 'center' }]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
   );
 }

@@ -24,6 +24,7 @@ export default function CustomTabBar() {
       styles.tabBarContainer,
       {
         bottom: insets.bottom + 20,
+        backgroundColor: '#313133',
       }
     ]}>
       {tabs.map((tab, index) => {
@@ -53,12 +54,13 @@ export default function CustomTabBar() {
 const styles = StyleSheet.create({
   tabBarContainer: {
     position: 'absolute',
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingHorizontal: 40,
-    // No background, no border, no shadows - just transparent container
+    paddingVertical: 12,
+    borderRadius: 30,
   },
 });
