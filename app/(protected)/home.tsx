@@ -1,202 +1,390 @@
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, StatusBar, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePrivy } from "@privy-io/expo";
-import { Ionicons } from "@expo/vector-icons";
-import { Colors, commonStyles, typography, spacing, borderRadius, shadows } from "@/src/shared/design/theme";
+import { MaterialCommunityIcons, Feather, FontAwesome5 } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
+import { Colors, spacing } from "@/src/shared/design/theme";
 import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
-import CreditLineCard from "@/src/shared/components/CreditLineCard";
-import LoanCard from "@/src/shared/components/LoanCard";
-import TransactionRow from "@/src/shared/components/TransactionRow";
+import { useRouter } from "expo-router";
+
+const { width } = Dimensions.get('window');
 
 export default function Home() {
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
   const insets = useSafeAreaInsets();
   const { user } = usePrivy();
+  const router = useRouter();
 
-  // Mock data - will be replaced with real data from API
-  const creditLine = {
-    totalAmount: 500,
-    availableAmount: 350,
-    usedAmount: 150,
-    nextPaymentDue: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
-  };
-
-  const activeLoans = [
-    {
-      id: '1',
-      amount: 100,
-      serviceName: 'CFE - Electricity',
-      dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      status: 'active' as const,
-    },
-    {
-      id: '2',
-      amount: 50,
-      serviceName: 'Telmex - Internet',
-      dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-      status: 'active' as const,
-    },
-  ];
-
-  const recentTransactions = [
-    {
-      id: '1',
-      type: 'bill_payment' as const,
-      amount: 100,
-      description: 'CFE Bill Payment',
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    },
-    {
-      id: '2',
-      type: 'loan_disbursement' as const,
-      amount: 100,
-      description: 'Loan Approved',
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    },
-  ];
+  // Mock data - Nu Bank style
+  const accountBalance = 0.00;
+  const creditCardBalance = 7298.52;
+  const creditLimit = 1.48;
+  const creditCutoffDate = "03 NOV";
 
   if (!user) {
     return null;
   }
 
   return (
-    <View style={[commonStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom + 90 }]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
-        <View style={{ marginBottom: spacing.xxxl }}>
-          
-        </View>
-        {/* Credit Line Card */}
-        <CreditLineCard {...creditLine} />
-
-        {/* Quick Actions */}
-        <View style={{ marginBottom: spacing.xxxl }}>
-          <Text style={[typography.sectionHeader, { color: colors.primaryText, marginBottom: spacing.lg }]}>
-            Quick Actions
-          </Text>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }}>
-            <QuickActionButton
-              icon="add-circle"
-              title="Request Loan"
-              colors={colors}
-              onPress={() => {}}
-            />
-            <QuickActionButton
-              icon="cash"
-              title="Repay"
-              colors={colors}
-              onPress={() => {}}
-            />
-            <QuickActionButton
-              icon="wallet"
-              title="Wallet"
-              colors={colors}
-              onPress={() => {}}
-            />
-          </View>
-        </View>
-
-        {/* Active Loans */}
-        {activeLoans.length > 0 && (
-          <View style={{ marginBottom: spacing.xxxl }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.lg }}>
-              <Text style={[typography.sectionHeader, { color: colors.primaryText }]}>
-                Active Loans
-              </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Text style={[typography.subtitle, { color: colors.accent }]}>
-                  View All
-                </Text>
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#FF1493" />
+      <LinearGradient
+        colors={['#FF1493', '#C71585']}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          {/* Purple Header Section */}
+          <View style={{ paddingTop: insets.top }}>
+            {/* Top Navigation Icons */}
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: spacing.xl,
+              paddingVertical: spacing.lg,
+            }}>
+              <TouchableOpacity style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Feather name="user" size={24} color="#FFFFFF" />
               </TouchableOpacity>
+
+              <View style={{ flexDirection: 'row', gap: spacing.lg }}>
+                <TouchableOpacity>
+                  <Feather name="help-circle" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <MaterialCommunityIcons name="email-outline" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
             </View>
 
-            {activeLoans.map((loan) => (
-              <LoanCard
-                key={loan.id}
-                amount={loan.amount}
-                serviceName={loan.serviceName}
-                dueDate={loan.dueDate}
-                status={loan.status}
-                onPress={() => {}}
-              />
-            ))}
-          </View>
-        )}
+            {/* Welcome Message */}
+            <View style={{ paddingHorizontal: spacing.xl, marginBottom: spacing.xl }}>
+              <Text style={{
+                fontSize: 18,
+                color: '#FFFFFF',
+                fontWeight: '500',
+              }}>
+                Hola, Usuario
+              </Text>
+            </View>
 
-        {/* Recent Activity */}
-        <View style={{ marginBottom: spacing.xl }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.lg }}>
-            <Text style={[typography.sectionHeader, { color: colors.primaryText }]}>
-              Recent Activity
-            </Text>
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={[typography.subtitle, { color: colors.accent }]}>
-                View All
+            {/* Notification Cards */}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: spacing.xl, gap: spacing.md }}
+              style={{ marginBottom: spacing.xl }}
+            >
+              <NotificationCard
+                icon="alert-triangle"
+                title="Actualiza tus datos hoy mismo."
+                color="#1A1A1A"
+                iconColor="#FFA500"
+                textColor="#FFFFFF"
+              />
+              <NotificationCard
+                icon="pie-chart"
+                title="¡Aumenta tu límite de crédito hasta $200 m..."
+                color="rgba(255,255,255,0.15)"
+                iconColor="#FFFFFF"
+                textColor="#FFFFFF"
+                showDots
+              />
+            </ScrollView>
+          </View>
+
+          {/* Black Section - Account & Services */}
+          <View style={{
+            backgroundColor: colors.mainBackground,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            flex: 1,
+            minHeight: 600,
+          }}>
+            {/* Account Balance Card */}
+            <TouchableOpacity style={{
+              padding: spacing.xl,
+              borderBottomWidth: 1,
+              borderBottomColor: colors.border,
+            }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View>
+                  <Text style={{
+                    fontSize: 18,
+                    color: colors.primaryText,
+                    fontWeight: '500',
+                    marginBottom: spacing.sm,
+                  }}>
+                    Cuenta Nu
+                  </Text>
+                  <Text style={{
+                    fontSize: 28,
+                    color: colors.primaryText,
+                    fontWeight: '600',
+                  }}>
+                    ${accountBalance.toFixed(2)}
+                  </Text>
+                </View>
+                <Feather name="chevron-right" size={24} color={colors.mutedText} />
+              </View>
+            </TouchableOpacity>
+
+            {/* Quick Actions */}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: spacing.xl,
+                paddingVertical: spacing.xl,
+                gap: spacing.md
+              }}
+            >
+              <QuickAction
+                icon="arrow-down"
+                iconComponent={Feather}
+                label="Recibir y depositar"
+                onPress={() => router.push('/(protected)/wallet')}
+                colors={colors}
+                isNew
+              />
+              <QuickAction
+                icon="arrow-up"
+                iconComponent={Feather}
+                label="Transferir"
+                onPress={() => {}}
+                colors={colors}
+              />
+              <QuickAction
+                icon="hand-holding-usd"
+                iconComponent={FontAwesome5}
+                label="Simular préstamo"
+                onPress={() => {}}
+                colors={colors}
+              />
+              <QuickAction
+                icon="file-text"
+                iconComponent={Feather}
+                label="Pagar servicios"
+                onPress={() => {}}
+                colors={colors}
+              />
+              <QuickAction
+                icon="mobile"
+                iconComponent={Feather}
+                label="Recargar celular"
+                onPress={() => {}}
+                colors={colors}
+              />
+            </ScrollView>
+
+            {/* My Cards Section */}
+            <TouchableOpacity style={{
+              paddingHorizontal: spacing.xl,
+              paddingVertical: spacing.md,
+              marginBottom: spacing.lg,
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name="credit-card-outline" size={20} color={colors.mutedText} />
+                <Text style={{
+                  fontSize: 14,
+                  color: colors.mutedText,
+                  marginLeft: spacing.sm,
+                  fontWeight: '500',
+                }}>
+                  Mis tarjetas
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Credit Card Section */}
+            <TouchableOpacity style={{
+              paddingHorizontal: spacing.xl,
+              paddingBottom: spacing.xl,
+              borderBottomWidth: 1,
+              borderBottomColor: colors.border,
+            }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <View>
+                  <Text style={{
+                    fontSize: 18,
+                    color: colors.primaryText,
+                    fontWeight: '500',
+                    marginBottom: spacing.lg,
+                  }}>
+                    Tarjeta de crédito
+                  </Text>
+
+                  <Text style={{
+                    fontSize: 14,
+                    color: colors.mutedText,
+                    marginBottom: spacing.xs,
+                  }}>
+                    Saldo actual
+                  </Text>
+                  <Text style={{
+                    fontSize: 24,
+                    color: colors.primaryText,
+                    fontWeight: '600',
+                    marginBottom: spacing.lg,
+                  }}>
+                    ${creditCardBalance.toFixed(2)}
+                  </Text>
+
+                  <Text style={{
+                    fontSize: 14,
+                    color: colors.mutedText,
+                  }}>
+                    Fecha de corte: {creditCutoffDate}
+                  </Text>
+                  <Text style={{
+                    fontSize: 14,
+                    color: colors.mutedText,
+                    marginTop: spacing.xs,
+                  }}>
+                    Límite disponible: ${creditLimit.toFixed(2)}
+                  </Text>
+                </View>
+                <Feather name="chevron-right" size={24} color={colors.mutedText} />
+              </View>
+            </TouchableOpacity>
+
+            {/* MSI con Nu Section */}
+            <TouchableOpacity style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: spacing.xl,
+              backgroundColor: colors.cardBackground,
+              marginTop: spacing.xl,
+              marginHorizontal: spacing.xl,
+              borderRadius: 12,
+            }}>
+              <View style={{
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+                backgroundColor: colors.primaryPink,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: spacing.md,
+              }}>
+                <Feather name="percent" size={16} color="#FFFFFF" />
+              </View>
+              <Text style={{
+                fontSize: 16,
+                color: colors.primaryText,
+                fontWeight: '500',
+              }}>
+                MSI con Cerca
               </Text>
             </TouchableOpacity>
-          </View>
 
-          {recentTransactions.map((transaction) => (
-            <TransactionRow
-              key={transaction.id}
-              type={transaction.type}
-              amount={transaction.amount}
-              description={transaction.description}
-              timestamp={transaction.timestamp}
-              onPress={() => {}}
-            />
-          ))}
-        </View>
-
-        {/* Help Banner */}
-        <View style={[
-          shadows.standard,
-          {
-            backgroundColor: colors.uiElements,
-            borderRadius: borderRadius.medium,
-            padding: spacing.lg,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }
-        ]}>
-          <Ionicons name="help-circle" size={24} color={colors.accent} style={{ marginRight: spacing.md }} />
-          <View style={{ flex: 1 }}>
-            <Text style={[typography.bodyText, { color: colors.primaryText, marginBottom: spacing.xs }]}>
-              Need Help?
-            </Text>
-            <Text style={[typography.subtitle, { color: colors.secondaryText }]}>
-              Contact our support team
-            </Text>
+            {/* Bottom Spacing */}
+            <View style={{ height: 100 }} />
           </View>
-          <Ionicons name="chevron-forward" size={20} color={colors.secondaryText} />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </LinearGradient>
+    </>
+  );
+}
+
+// Notification Card Component
+function NotificationCard({ icon, title, color, iconColor, textColor, showDots }: any) {
+  return (
+    <View style={{
+      backgroundColor: color,
+      borderRadius: 12,
+      padding: spacing.lg,
+      width: width * 0.75,
+      minHeight: 120,
+      justifyContent: 'space-between',
+    }}>
+      {showDots && (
+        <TouchableOpacity style={{
+          position: 'absolute',
+          top: spacing.md,
+          right: spacing.md,
+        }}>
+          <MaterialCommunityIcons name="dots-vertical" size={20} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
+
+      <View style={{
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        backgroundColor: color === '#1A1A1A' ? '#2A2A2A' : 'rgba(255,255,255,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: spacing.md,
+      }}>
+        <Feather name={icon} size={18} color={iconColor} />
+      </View>
+
+      <Text style={{
+        fontSize: 14,
+        color: textColor,
+        fontWeight: '500',
+        lineHeight: 20,
+      }}>
+        {title}
+      </Text>
     </View>
   );
 }
 
-function QuickActionButton({ icon, title, colors, onPress }: any) {
+// Quick Action Button Component
+function QuickAction({ icon, iconComponent: Icon, label, onPress, colors, isNew }: any) {
   return (
-    <TouchableOpacity
-      style={[
-        shadows.standard,
-        {
-          flex: 1,
-          backgroundColor: colors.uiElements,
-          borderRadius: borderRadius.medium,
-          padding: spacing.lg,
-          alignItems: 'center',
-          justifyContent: 'center',
-          aspectRatio: 1,
-        }
-      ]}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      <Ionicons name={icon} size={32} color={colors.accent} style={{ marginBottom: spacing.sm }} />
-      <Text style={[typography.subtitle, { color: colors.primaryText, textAlign: 'center' }]}>
-        {title}
+    <TouchableOpacity onPress={onPress} style={{ alignItems: 'center' }}>
+      <View style={{
+        width: 64,
+        height: 64,
+        borderRadius: 32,
+        backgroundColor: colors.cardBackground,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: spacing.sm,
+        borderWidth: 1,
+        borderColor: colors.border,
+      }}>
+        {isNew && (
+          <View style={{
+            position: 'absolute',
+            top: -2,
+            right: -2,
+            backgroundColor: colors.primaryPink,
+            paddingHorizontal: 8,
+            paddingVertical: 2,
+            borderRadius: 10,
+            zIndex: 1,
+          }}>
+            <Text style={{ color: '#FFFFFF', fontSize: 10, fontWeight: '600' }}>
+              Nuevo
+            </Text>
+          </View>
+        )}
+        <Icon name={icon} size={24} color={colors.whiteText} />
+      </View>
+      <Text style={{
+        fontSize: 12,
+        color: colors.whiteText,
+        textAlign: 'center',
+        width: 80,
+      }}>
+        {label}
       </Text>
     </TouchableOpacity>
   );
