@@ -56,7 +56,7 @@ export default function WalletScreen() {
               color: '#FFFFFF',
               fontWeight: '600',
             }}>
-              Billetera
+              Wallet
             </Text>
             <TouchableOpacity>
               <Feather name="help-circle" size={24} color="#FFFFFF" />
@@ -70,7 +70,7 @@ export default function WalletScreen() {
               color: 'rgba(255,255,255,0.8)',
               marginBottom: spacing.sm,
             }}>
-              Saldo disponible
+              Available Balance
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'baseline', marginBottom: spacing.md }}>
               <Text style={{
@@ -129,20 +129,20 @@ export default function WalletScreen() {
             }}>
               <QuickActionButton
                 icon="arrow-down"
-                label="Depositar"
+                label="Deposit"
                 onPress={() => {}}
                 colors={colors}
                 primary
               />
               <QuickActionButton
                 icon="arrow-up"
-                label="Retirar"
+                label="Withdraw"
                 onPress={() => {}}
                 colors={colors}
               />
               <QuickActionButton
                 icon="repeat"
-                label="Cambiar"
+                label="Swap"
                 onPress={() => {}}
                 colors={colors}
               />
@@ -156,27 +156,27 @@ export default function WalletScreen() {
                 fontWeight: '600',
                 marginBottom: spacing.lg,
               }}>
-                Funciones
+                Features
               </Text>
 
               <FeatureCard
                 icon="credit-card"
-                title="Tarjeta virtual"
-                description="Solicita tu tarjeta USDC"
+                title="Virtual Card"
+                description="Request your USDC card"
                 colors={colors}
                 onPress={() => {}}
               />
               <FeatureCard
                 icon="shield"
-                title="Seguridad"
-                description="Configura tu autenticación"
+                title="Security"
+                description="Configure your authentication"
                 colors={colors}
                 onPress={() => {}}
               />
               <FeatureCard
                 icon="bar-chart-2"
-                title="Rendimientos"
-                description="Gana intereses con tu saldo"
+                title="Earnings"
+                description="Earn interest on your balance"
                 colors={colors}
                 onPress={() => {}}
               />
@@ -195,7 +195,7 @@ export default function WalletScreen() {
                   color: colors.primaryText,
                   fontWeight: '600',
                 }}>
-                  Actividad reciente
+                  Recent Activity
                 </Text>
                 <TouchableOpacity>
                   <Text style={{
@@ -203,7 +203,7 @@ export default function WalletScreen() {
                     color: colors.primaryPink,
                     fontWeight: '500',
                   }}>
-                    Ver todo
+                    View All
                   </Text>
                 </TouchableOpacity>
               </View>

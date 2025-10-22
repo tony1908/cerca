@@ -76,7 +76,7 @@ export default function Home() {
                 color: '#FFFFFF',
                 fontWeight: '500',
               }}>
-                Hola, Usuario
+                Hello, User
               </Text>
             </View>
 
@@ -89,14 +89,14 @@ export default function Home() {
             >
               <NotificationCard
                 icon="alert-triangle"
-                title="Actualiza tus datos hoy mismo."
+                title="Update your information today."
                 color="#1A1A1A"
                 iconColor="#FFA500"
                 textColor="#FFFFFF"
               />
               <NotificationCard
                 icon="pie-chart"
-                title="¡Aumenta tu límite de crédito hasta $200 m..."
+                title="Increase your credit limit up to $200 m..."
                 color="rgba(255,255,255,0.15)"
                 iconColor="#FFFFFF"
                 textColor="#FFFFFF"
@@ -127,7 +127,7 @@ export default function Home() {
                     fontWeight: '500',
                     marginBottom: spacing.sm,
                   }}>
-                    Cuenta Nu
+                    Cerca Account
                   </Text>
                   <Text style={{
                     fontSize: 28,
@@ -154,7 +154,7 @@ export default function Home() {
               <QuickAction
                 icon="arrow-down"
                 iconComponent={Feather}
-                label="Recibir y depositar"
+                label="Receive & Deposit"
                 onPress={() => router.push('/(protected)/wallet')}
                 colors={colors}
                 isNew
@@ -162,28 +162,28 @@ export default function Home() {
               <QuickAction
                 icon="arrow-up"
                 iconComponent={Feather}
-                label="Transferir"
+                label="Transfer"
                 onPress={() => {}}
                 colors={colors}
               />
               <QuickAction
                 icon="hand-holding-usd"
                 iconComponent={FontAwesome5}
-                label="Simular préstamo"
+                label="Simulate Loan"
                 onPress={() => {}}
                 colors={colors}
               />
               <QuickAction
                 icon="file-text"
                 iconComponent={Feather}
-                label="Pagar servicios"
+                label="Pay Services"
                 onPress={() => {}}
                 colors={colors}
               />
               <QuickAction
                 icon="mobile"
                 iconComponent={Feather}
-                label="Recargar celular"
+                label="Top Up Mobile"
                 onPress={() => {}}
                 colors={colors}
               />
@@ -203,7 +203,7 @@ export default function Home() {
                   marginLeft: spacing.sm,
                   fontWeight: '500',
                 }}>
-                  Mis tarjetas
+                  My Cards
                 </Text>
               </View>
             </TouchableOpacity>
@@ -223,7 +223,7 @@ export default function Home() {
                     fontWeight: '500',
                     marginBottom: spacing.lg,
                   }}>
-                    Tarjeta de crédito
+                    Credit Card
                   </Text>
 
                   <Text style={{
@@ -231,7 +231,7 @@ export default function Home() {
                     color: colors.mutedText,
                     marginBottom: spacing.xs,
                   }}>
-                    Saldo actual
+                    Current Balance
                   </Text>
                   <Text style={{
                     fontSize: 24,
@@ -246,14 +246,14 @@ export default function Home() {
                     fontSize: 14,
                     color: colors.mutedText,
                   }}>
-                    Fecha de corte: {creditCutoffDate}
+                    Cutoff Date: {creditCutoffDate}
                   </Text>
                   <Text style={{
                     fontSize: 14,
                     color: colors.mutedText,
                     marginTop: spacing.xs,
                   }}>
-                    Límite disponible: ${creditLimit.toFixed(2)}
+                    Available Limit: ${creditLimit.toFixed(2)}
                   </Text>
                 </View>
                 <Feather name="chevron-right" size={24} color={colors.mutedText} />
@@ -287,7 +287,7 @@ export default function Home() {
                 color: colors.primaryText,
                 fontWeight: '500',
               }}>
-                MSI con Cerca
+                Interest Free with Cerca
               </Text>
             </TouchableOpacity>
 
