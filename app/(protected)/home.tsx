@@ -48,14 +48,17 @@ export default function Home() {
               paddingHorizontal: spacing.xl,
               paddingVertical: spacing.lg,
             }}>
-              <TouchableOpacity style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+              <TouchableOpacity
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => router.push('/(protected)/profile')}
+              >
                 <Feather name="user" size={24} color="#FFFFFF" />
               </TouchableOpacity>
 
