@@ -18,7 +18,7 @@ export default function Home() {
 
   // Mock data - Nu Bank style
   const accountBalance = 0.00;
-  const creditCardBalance = 7298.52;
+  const creditLineBalance = 7298.52;
   const creditLimit = 1.48;
   const creditCutoffDate = "03 NOV";
 
@@ -173,14 +173,14 @@ export default function Home() {
                 icon="hand-holding-usd"
                 iconComponent={FontAwesome5}
                 label="Simulate Loan"
-                onPress={() => {}}
+                onPress={() => router.push('/(protected)/loan-simulate')}
                 colors={colors}
               />
               <QuickAction
                 icon="file-text"
                 iconComponent={Feather}
                 label="Pay Services"
-                onPress={() => {}}
+                onPress={() => router.push('/(protected)/pay-services')}
                 colors={colors}
               />
               <QuickAction
@@ -211,7 +211,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            {/* Credit Card Section */}
+            {/* Credit Line Section */}
             <TouchableOpacity style={{
               paddingHorizontal: spacing.xl,
               paddingBottom: spacing.xl,
@@ -226,7 +226,7 @@ export default function Home() {
                     fontWeight: '500',
                     marginBottom: spacing.lg,
                   }}>
-                    Credit Card
+                    Credit Line
                   </Text>
 
                   <Text style={{
@@ -242,7 +242,7 @@ export default function Home() {
                     fontWeight: '600',
                     marginBottom: spacing.lg,
                   }}>
-                    ${creditCardBalance.toFixed(2)}
+                    ${creditLineBalance.toFixed(2)}
                   </Text>
 
                   <Text style={{

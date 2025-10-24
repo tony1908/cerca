@@ -1,10 +1,15 @@
-import { View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, spacing } from '@/src/shared/design/theme';
 import { useColorScheme } from '@/src/shared/hooks/useColorScheme';
 import { useRouter } from 'expo-router';
+import QRCodeStyled from 'react-native-qrcode-styled';
+import { usePrivy } from '@privy-io/expo';
+import { useEmbeddedEthereumWallet, getUserEmbeddedEthereumWallet } from '@privy-io/expo';
+import * as Clipboard from 'expo-clipboard';
+import { useState, useEffect } from 'react';
 
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'dark';
@@ -12,25 +17,26 @@ export default function WalletScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
-  const balance = 250.50;
-  const walletAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
+  const { user } = usePrivy();
+  const { wallets } = useEmbeddedEthereumWallet();
+  const [walletAddress, setWalletAddress] = useState<string>('');
+  const [balance, setBalance] = useState(0.00);
 
-  const recentTransactions = [
-    {
-      id: '1',
-      type: 'deposit',
-      amount: 200,
-      description: 'USDC Deposit',
-      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    },
-    {
-      id: '2',
-      type: 'payment',
-      amount: -50,
-      description: 'Loan Repayment',
-      timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-    },
-  ];
+  useEffect(() => {
+    if (user) {
+      const embeddedWallet = getUserEmbeddedEthereumWallet(user);
+      if (embeddedWallet?.address) {
+        setWalletAddress(embeddedWallet.address);
+      }
+    }
+  }, [user]);
+
+  const copyToClipboard = async () => {
+    if (walletAddress) {
+      await Clipboard.setStringAsync(walletAddress);
+      Alert.alert('Copied!', 'Wallet address copied to clipboard');
+    }
+  };
 
   return (
     <>
@@ -49,63 +55,22 @@ export default function WalletScreen() {
             paddingVertical: spacing.lg,
           }}>
             <TouchableOpacity onPress={() => router.back()}>
-              <Feather name="arrow-left" size={24} color="#FFFFFF" />
+              <Feather name="x" size={24} color="#FFFFFF" />
             </TouchableOpacity>
-            <Text style={{
-              fontSize: 18,
-              color: '#FFFFFF',
-              fontWeight: '600',
-            }}>
-              Wallet
-            </Text>
-            <TouchableOpacity>
-              <Feather name="help-circle" size={24} color="#FFFFFF" />
-            </TouchableOpacity>
+            <View />
+            <View />
           </View>
 
-          {/* Balance Display */}
-          <View style={{ paddingHorizontal: spacing.xl, paddingBottom: spacing.xxxl }}>
+          {/* Title */}
+          <View style={{ paddingHorizontal: spacing.xl, paddingBottom: spacing.lg }}>
             <Text style={{
-              fontSize: 14,
-              color: 'rgba(255,255,255,0.8)',
-              marginBottom: spacing.sm,
+              fontSize: 24,
+              color: '#FFFFFF',
+              fontWeight: '700',
+              lineHeight: 32,
             }}>
-              Available Balance
+              Receive deposits in your{'\n'}Cerca Wallet
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'baseline', marginBottom: spacing.md }}>
-              <Text style={{
-                fontSize: 36,
-                color: '#FFFFFF',
-                fontWeight: '700',
-              }}>
-                ${balance.toFixed(2)}
-              </Text>
-              <Text style={{
-                fontSize: 16,
-                color: 'rgba(255,255,255,0.8)',
-                marginLeft: spacing.sm,
-              }}>
-                USDC
-              </Text>
-            </View>
-            <TouchableOpacity style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: 'rgba(255,255,255,0.2)',
-              paddingHorizontal: spacing.md,
-              paddingVertical: spacing.sm,
-              borderRadius: 20,
-              alignSelf: 'flex-start',
-            }}>
-              <Text style={{
-                fontSize: 12,
-                color: '#FFFFFF',
-                marginRight: spacing.sm,
-              }}>
-                {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
-              </Text>
-              <Feather name="copy" size={14} color="#FFFFFF" />
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -120,238 +85,152 @@ export default function WalletScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 100 }}
           >
-            {/* Quick Actions */}
-            <View style={{
-              flexDirection: 'row',
-              paddingHorizontal: spacing.xl,
-              paddingVertical: spacing.xxl,
-              gap: spacing.md,
-            }}>
-              <QuickActionButton
-                icon="arrow-down"
-                label="Deposit"
-                onPress={() => {}}
-                colors={colors}
-                primary
-              />
-              <QuickActionButton
-                icon="arrow-up"
-                label="Withdraw"
-                onPress={() => {}}
-                colors={colors}
-              />
-              <QuickActionButton
-                icon="repeat"
-                label="Swap"
-                onPress={() => {}}
-                colors={colors}
-              />
-            </View>
-
-            {/* Features Section */}
-            <View style={{ paddingHorizontal: spacing.xl, marginBottom: spacing.xl }}>
-              <Text style={{
-                fontSize: 18,
-                color: colors.primaryText,
-                fontWeight: '600',
-                marginBottom: spacing.lg,
-              }}>
-                Features
-              </Text>
-
-              <FeatureCard
-                icon="credit-card"
-                title="Virtual Card"
-                description="Request your USDC card"
-                colors={colors}
-                onPress={() => {}}
-              />
-              <FeatureCard
-                icon="shield"
-                title="Security"
-                description="Configure your authentication"
-                colors={colors}
-                onPress={() => {}}
-              />
-              <FeatureCard
-                icon="bar-chart-2"
-                title="Earnings"
-                description="Earn interest on your balance"
-                colors={colors}
-                onPress={() => {}}
-              />
-            </View>
-
-            {/* Recent Activity */}
-            <View style={{ paddingHorizontal: spacing.xl }}>
+            {/* Deposit Options */}
+            <View style={{ paddingHorizontal: spacing.xl, paddingTop: spacing.xxl, marginBottom: spacing.xl }}>
               <View style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: spacing.lg
+                justifyContent: 'space-around',
+                gap: spacing.xl,
               }}>
-                <Text style={{
-                  fontSize: 18,
-                  color: colors.primaryText,
-                  fontWeight: '600',
-                }}>
-                  Recent Activity
-                </Text>
-                <TouchableOpacity>
+                <TouchableOpacity style={{ alignItems: 'center' }}>
+                  <View style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    backgroundColor: colors.cardBackground,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: spacing.sm,
+                    borderWidth: 1,
+                    borderColor: colors.border,
+                  }}>
+                    <Feather name="arrow-down-left" size={32} color={colors.primaryPink} />
+                  </View>
                   <Text style={{
                     fontSize: 14,
-                    color: colors.primaryPink,
+                    color: '#FFFFFF',
                     fontWeight: '500',
                   }}>
-                    View All
+                    Via Transfer
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ alignItems: 'center' }}>
+                  <View style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    backgroundColor: colors.cardBackground,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: spacing.sm,
+                    borderWidth: 1,
+                    borderColor: colors.border,
+                  }}>
+                    <MaterialCommunityIcons name="swap-horizontal" size={32} color={colors.primaryPink} />
+                  </View>
+                  <Text style={{
+                    fontSize: 14,
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                  }}>
+                    From Exchange
                   </Text>
                 </TouchableOpacity>
               </View>
+            </View>
 
-              {recentTransactions.map((transaction) => (
-                <TransactionItem
-                  key={transaction.id}
-                  transaction={transaction}
-                  colors={colors}
-                />
-              ))}
+            {/* Wallet Address Section */}
+            <View style={{ paddingHorizontal: spacing.xl, marginBottom: spacing.xl }}>
+              <Text style={{
+                fontSize: 14,
+                color: colors.mutedText,
+                marginBottom: spacing.sm,
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+              }}>
+                Wallet Address
+              </Text>
+              <View style={{
+                backgroundColor: colors.cardBackground,
+                borderRadius: 12,
+                padding: spacing.lg,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                borderColor: colors.border,
+              }}>
+                <Text style={{
+                  fontSize: 16,
+                  color: '#FFFFFF',
+                  fontFamily: 'monospace',
+                  flex: 1,
+                }}>
+                  {walletAddress ? `${walletAddress.slice(0, 10)}...${walletAddress.slice(-8)}` : 'Loading...'}
+                </Text>
+                <View style={{ flexDirection: 'row', gap: spacing.md }}>
+                  <TouchableOpacity onPress={copyToClipboard}>
+                    <Feather name="copy" size={20} color={colors.primaryPink} />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Feather name="more-vertical" size={20} color={colors.mutedText} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            {/* QR Code Card */}
+            <View style={{ paddingHorizontal: spacing.xl, marginBottom: spacing.xl }}>
+              <View
+                style={{
+                  backgroundColor: colors.primaryPink,
+                  borderRadius: 16,
+                  padding: spacing.xl,
+                  alignItems: 'center',
+                }}
+              >
+                <View style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 12,
+                  padding: spacing.md,
+                  marginBottom: spacing.lg,
+                }}>
+                  {walletAddress && (
+                    <QRCodeStyled
+                      data={walletAddress}
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                      }}
+                      pieceSize={6}
+                      pieceBorderRadius={2}
+                      color="#1B1B1D"
+                    />
+                  )}
+                </View>
+
+                <Text style={{
+                  fontSize: 18,
+                  color: '#FFFFFF',
+                  fontWeight: '600',
+                  marginBottom: spacing.sm,
+                  textAlign: 'center',
+                }}>
+                  Receive your first deposit
+                </Text>
+                <Text style={{
+                  fontSize: 14,
+                  color: 'rgba(255,255,255,0.9)',
+                  textAlign: 'center',
+                  lineHeight: 20,
+                }}>
+                  Scan this QR code or share your wallet address to receive PYUSDC deposits
+                </Text>
+              </View>
             </View>
           </ScrollView>
         </View>
       </LinearGradient>
     </>
-  );
-}
-
-function QuickActionButton({ icon, label, onPress, colors, primary }: any) {
-  return (
-    <TouchableOpacity
-      style={{
-        flex: 1,
-        backgroundColor: primary ? colors.primaryPink : colors.cardBackground,
-        borderRadius: 12,
-        paddingVertical: spacing.lg,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: primary ? colors.primaryPink : colors.border,
-      }}
-      onPress={onPress}
-    >
-      <Feather
-        name={icon}
-        size={24}
-        color="#FFFFFF"
-        style={{ marginBottom: spacing.sm }}
-      />
-      <Text style={{
-        fontSize: 14,
-        color: '#FFFFFF',
-        fontWeight: '500',
-      }}>
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-}
-
-function FeatureCard({ icon, title, description, colors, onPress }: any) {
-  return (
-    <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: colors.cardBackground,
-        borderRadius: 12,
-        padding: spacing.lg,
-        marginBottom: spacing.md,
-        borderWidth: 1,
-        borderColor: colors.border,
-      }}
-      onPress={onPress}
-    >
-      <View style={{
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: 'rgba(255, 20, 147, 0.15)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: spacing.lg,
-      }}>
-        <Feather name={icon} size={24} color={colors.primaryPink} />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={{
-          fontSize: 16,
-          color: '#FFFFFF',
-          fontWeight: '600',
-          marginBottom: 2,
-        }}>
-          {title}
-        </Text>
-        <Text style={{
-          fontSize: 14,
-          color: colors.mutedText,
-        }}>
-          {description}
-        </Text>
-      </View>
-      <Feather name="chevron-right" size={20} color={colors.mutedText} />
-    </TouchableOpacity>
-  );
-}
-
-function TransactionItem({ transaction, colors }: any) {
-  const isPositive = transaction.amount > 0;
-
-  return (
-    <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: spacing.lg,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.border,
-      }}
-    >
-      <View style={{
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: isPositive ? 'rgba(0, 255, 136, 0.15)' : 'rgba(255, 59, 48, 0.15)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: spacing.md,
-      }}>
-        <Feather
-          name={isPositive ? 'arrow-down-left' : 'arrow-up-right'}
-          size={20}
-          color={isPositive ? colors.success : colors.error}
-        />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={{
-          fontSize: 16,
-          color: '#FFFFFF',
-          fontWeight: '500',
-        }}>
-          {transaction.description}
-        </Text>
-        <Text style={{
-          fontSize: 14,
-          color: colors.mutedText,
-          marginTop: 2,
-        }}>
-          {transaction.timestamp.toLocaleDateString()}
-        </Text>
-      </View>
-      <Text style={{
-        fontSize: 16,
-        color: isPositive ? colors.success : '#FFFFFF',
-        fontWeight: '600',
-      }}>
-        {isPositive ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
-      </Text>
-    </TouchableOpacity>
   );
 }
