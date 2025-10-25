@@ -215,7 +215,24 @@ export default function LoanCalculatorScreen() {
             </View>
 
             <TouchableOpacity
-              onPress={() => router.push('/(protected)/loan-confirm')}
+              onPress={() => {
+                // Calculate max payment date (30 days from first payment in future)
+                const today = new Date();
+                const daysUntilPayment = 30; // 30 days to repay
+                const maxPaymentDate = new Date(today.getTime() + daysUntilPayment * 24 * 60 * 60 * 1000);
+
+                router.push({
+                  pathname: '/(protected)/loan-confirm',
+                  params: {
+                    amount: loanAmount.toString(),
+                    term: selectedTerm.toString(),
+                    monthlyPayment: monthlyPayment.toFixed(2),
+                    totalToPay: totalToPay.toFixed(2),
+                    firstPaymentDate,
+                    maxPaymentDate: maxPaymentDate.toISOString(),
+                  },
+                });
+              }}
               style={{
                 width: 64,
                 height: 64,

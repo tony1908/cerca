@@ -10,6 +10,7 @@ import { usePrivy } from '@privy-io/expo';
 import { useEmbeddedEthereumWallet, getUserEmbeddedEthereumWallet } from '@privy-io/expo';
 import * as Clipboard from 'expo-clipboard';
 import { useState, useEffect } from 'react';
+import NetworkSwitcher from '@/src/features/wallet/components/NetworkSwitcher';
 
 export default function WalletScreen() {
   const colorScheme = useColorScheme() ?? 'dark';
@@ -85,8 +86,13 @@ export default function WalletScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 100 }}
           >
+            {/* Network Switcher */}
+            <View style={{ paddingHorizontal: spacing.xl, paddingTop: spacing.xxl }}>
+              <NetworkSwitcher />
+            </View>
+
             {/* Deposit Options */}
-            <View style={{ paddingHorizontal: spacing.xl, paddingTop: spacing.xxl, marginBottom: spacing.xl }}>
+            <View style={{ paddingHorizontal: spacing.xl, marginBottom: spacing.xl }}>
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',

@@ -28,7 +28,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.tony.example"
+      "package": "dev.tony.example",
+      "permissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.BIND_DEVICE_ADMIN"
+      ]
     },
     "extra": {
       "privyAppId": "",
