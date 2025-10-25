@@ -57,7 +57,7 @@ export default function ServiceNumberInputScreen() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor={colors.mainBackground} />
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View style={{ flex: 1, backgroundColor: colors.mainBackground }}>
         {/* Header */}
         <View style={{

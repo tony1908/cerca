@@ -32,7 +32,7 @@ export const useLoanContract = () => {
         // Use viem for reading contract data - more efficient than ethers
         return await viemReader.getActiveLoan(walletAddress);
       } catch (error) {
-        console.error('❌ Error getting active loan:', error);
+        console.log('❌ Error getting active loan:', error);
         throw error;
       }
     },

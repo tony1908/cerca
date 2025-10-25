@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, spacing } from '@/src/shared/design/theme';
 import { useColorScheme } from '@/src/shared/hooks/useColorScheme';
 import { useRouter } from 'expo-router';
@@ -21,10 +20,9 @@ export default function LoanSuccessScreen() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#FF1493" />
-      <LinearGradient
-        colors={['#FF1493', '#C71585']}
-        style={{ flex: 1 }}
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <View
+        style={{ flex: 1, backgroundColor: '#000000' }}
       >
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -304,7 +302,7 @@ export default function LoanSuccessScreen() {
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </LinearGradient>
+      </View>
     </>
   );
 }

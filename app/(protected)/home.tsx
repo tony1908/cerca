@@ -2,7 +2,6 @@ import { Text, View, ScrollView, TouchableOpacity, StatusBar, Dimensions } from 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePrivy } from "@privy-io/expo";
 import { MaterialCommunityIcons, Feather, FontAwesome5 } from "@expo/vector-icons";
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, spacing } from "@/src/shared/design/theme";
 import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
 import { useRouter } from "expo-router";
@@ -28,10 +27,9 @@ export default function Home() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#FF1493" />
-      <LinearGradient
-        colors={['#FF1493', '#C71585']}
-        style={{ flex: 1 }}
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <View
+        style={{ flex: 1, backgroundColor: '#000000' }}
       >
         <ScrollView
           style={{ flex: 1 }}
@@ -298,7 +296,7 @@ export default function Home() {
             <View style={{ height: 100 }} />
           </View>
         </ScrollView>
-      </LinearGradient>
+      </View>
     </>
   );
 }

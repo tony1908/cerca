@@ -10,7 +10,7 @@ export default function LoanSimulateScreen() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#1B1B1D" />
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View style={{ flex: 1, backgroundColor: colors.mainBackground }}>
         <ScrollView
           showsVerticalScrollIndicator={false}

@@ -153,7 +153,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    */
   useEffect(() => {
     if (isError) {
-      console.error('❌ Error fetching loan data:', error);
+      console.log('❌ Error fetching loan data:', error);
     }
   }, [isError, error]);
 

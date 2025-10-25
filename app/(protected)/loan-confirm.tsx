@@ -98,26 +98,8 @@ export default function LoanConfirmScreen() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor={colors.mainBackground} />
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View style={{ flex: 1, backgroundColor: colors.mainBackground }}>
-        {/* Header with back button */}
-        <View style={{
-          paddingTop: insets.top + spacing.md,
-          paddingHorizontal: spacing.xl,
-          paddingBottom: spacing.lg,
-        }}>
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={{
-              width: 40,
-              height: 40,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Feather name="chevron-left" size={28} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
