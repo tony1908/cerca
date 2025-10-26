@@ -15,11 +15,18 @@ export default function LoanConfirmScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
+  // Check if this is from bill payment flow
+  const fromBillPayment = params.fromBillPayment === 'true';
+  const serviceName = (params.service as string) || '';
+  const serviceNumber = (params.serviceNumber as string) || '';
+
   // Get loan parameters from router or use defaults
   const loanAmount = params.amount ? parseFloat(params.amount as string) : 7000.00;
   const totalToPay = params.totalToPay ? parseFloat(params.totalToPay as string) : 12768.21;
   const monthlyPayment = params.monthlyPayment ? parseFloat(params.monthlyPayment as string) : 1064.02;
+  const weeklyPayment = params.weeklyPayment ? parseFloat(params.weeklyPayment as string) : monthlyPayment / 4;
   const term = params.term ? parseInt(params.term as string) : 12;
+  const interestRate = params.interestRate ? parseFloat(params.interestRate as string) : 8.95;
   const firstPaymentDate = (params.firstPaymentDate as string) || '26 NOV';
   const maxPaymentDateISO = (params.maxPaymentDate as string) || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
   const monthlyInterestRate = 8.95;
@@ -61,17 +68,37 @@ export default function LoanConfirmScreen() {
 
             // Navigate to success screen after 1 second
             setTimeout(() => {
-              router.push({
-                pathname: '/(protected)/loan-success',
-                params: {
-                  amount: loanAmount.toString(),
-                  totalToPay: totalToPay.toString(),
-                  monthlyPayment: monthlyPayment.toString(),
-                  term: term.toString(),
-                  firstPaymentDate,
-                  txHash,
-                },
-              });
+              if (fromBillPayment) {
+                // If from bill payment, navigate with bill info
+                router.push({
+                  pathname: '/(protected)/loan-success',
+                  params: {
+                    amount: loanAmount.toString(),
+                    totalToPay: totalToPay.toString(),
+                    weeklyPayment: weeklyPayment.toString(),
+                    term: term.toString(),
+                    firstPaymentDate,
+                    interestRate: interestRate.toString(),
+                    txHash,
+                    fromBillPayment: 'true',
+                    service: serviceName,
+                    serviceNumber: serviceNumber,
+                  },
+                });
+              } else {
+                // Regular loan flow
+                router.push({
+                  pathname: '/(protected)/loan-success',
+                  params: {
+                    amount: loanAmount.toString(),
+                    totalToPay: totalToPay.toString(),
+                    monthlyPayment: monthlyPayment.toString(),
+                    term: term.toString(),
+                    firstPaymentDate,
+                    txHash,
+                  },
+                });
+              }
             }, 1000);
           },
           onError: (err: any) => {

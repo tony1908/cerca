@@ -3,20 +3,63 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { Colors, spacing } from '@/src/shared/design/theme';
 import { useColorScheme } from '@/src/shared/hooks/useColorScheme';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLoanStore } from '@/src/store/loanStore';
+import { useEffect } from 'react';
 
 export default function LoanSuccessScreen() {
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const lockDevice = useLoanStore(state => state.lockDevice);
 
-  const loanAmount = 7000.00;
-  const totalToPay = 12768.21;
-  const monthlyPayment = 1064.02;
-  const term = 12;
-  const firstPaymentDate = '26 NOV';
+  // Get loan parameters from router or use defaults
+  const loanAmount = params.amount ? parseFloat(params.amount as string) : 7000.00;
+  const totalToPay = params.totalToPay ? parseFloat(params.totalToPay as string) : 12768.21;
+  const monthlyPayment = params.monthlyPayment ? parseFloat(params.monthlyPayment as string) : 1064.02;
+  const weeklyPayment = params.weeklyPayment ? parseFloat(params.weeklyPayment as string) : monthlyPayment / 4;
+  const term = params.term ? parseInt(params.term as string) : 12;
+  const firstPaymentDate = (params.firstPaymentDate as string) || '26 NOV';
+  const interestRate = params.interestRate ? parseFloat(params.interestRate as string) : 8.95;
   const monthlyInterestRate = 8.95;
+
+  // Check if this is from bill payment flow
+  const fromBillPayment = params.fromBillPayment === 'true';
+  const serviceName = (params.service as string) || '';
+  const serviceNumber = (params.serviceNumber as string) || '';
+
+  /**
+   * Auto-activate kiosk mode after 3 seconds and navigate
+   */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('🔒 Auto-activating kiosk mode after loan approval...');
+      lockDevice('loan_accepted');
+
+      if (fromBillPayment) {
+        // If from bill payment, navigate to service payment success screen with loan info
+        router.push({
+          pathname: '/(protected)/service-payment-success',
+          params: {
+            service: serviceName,
+            serviceNumber: serviceNumber,
+            amount: loanAmount.toString(),
+            paymentMethod: 'loan',
+            weeklyPayment: weeklyPayment.toString(),
+            term: term.toString(),
+            interestRate: interestRate.toString(),
+          }
+        });
+      } else {
+        // Regular loan flow - navigate to kiosk lock screen
+        router.push('/(protected)/kiosk-lock');
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [lockDevice, router, fromBillPayment, serviceName, serviceNumber, loanAmount, weeklyPayment, term, interestRate]);
 
   return (
     <>
