@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { Colors, spacing } from '@/src/shared/design/theme';
 import { useColorScheme } from '@/src/shared/hooks/useColorScheme';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { sendPaymentToChipiPay } from '@/src/services/chipiPayService';
 import { useState } from 'react';
 
 export default function PaymentAmountScreen() {
@@ -39,21 +40,47 @@ export default function PaymentAmountScreen() {
     setAmount(formatAmount(newAmount));
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount >= 1.00) {
       setIsLoading(true);
-      // Simulate processing delay
-      setTimeout(() => {
-        router.push({
-          pathname: '/(protected)/service-payment-success',
-          params: {
-            service: serviceName,
-            serviceNumber: serviceNumber,
-            amount: amount
-          }
+
+      try {
+        console.log('💳 Processing payment via ChipiPay...');
+
+        // Call ChipiPay API
+        const result = await sendPaymentToChipiPay({
+          service: serviceName,
+          serviceNumber: serviceNumber,
+          amount: amount,
+          paymentMethod: 'account',
+          currency: 'PYUSD',
         });
-      }, 5000);
+
+        if (result.success) {
+          console.log('✅ Payment successful:', result.transactionId);
+
+          // Navigate to success screen with transaction ID
+          router.push({
+            pathname: '/(protected)/service-payment-success',
+            params: {
+              service: serviceName,
+              serviceNumber: serviceNumber,
+              amount: amount,
+              paymentMethod: 'account',
+              transactionId: result.transactionId,
+            }
+          });
+        } else {
+          console.error('❌ Payment failed:', result.message);
+          alert(`Payment failed: ${result.message}`);
+          setIsLoading(false);
+        }
+      } catch (error: any) {
+        console.error('❌ Payment error:', error);
+        alert(`Payment error: ${error.message}`);
+        setIsLoading(false);
+      }
     }
   };
 

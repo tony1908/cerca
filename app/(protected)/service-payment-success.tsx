@@ -15,6 +15,7 @@ export default function ServicePaymentSuccessScreen() {
   const serviceName = (params.service as string) || 'Service';
   const serviceNumber = (params.serviceNumber as string) || '';
   const amount = (params.amount as string) || '0.00';
+  const transactionId = (params.transactionId as string) || `TXN${Math.floor(Math.random() * 1000000)}`;
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -248,7 +249,7 @@ export default function ServicePaymentSuccessScreen() {
                   color: '#FFFFFF',
                   fontWeight: '600',
                 }}>
-                  #TXN{Math.floor(Math.random() * 1000000)}
+                  {transactionId}
                 </Text>
               </View>
             </View>
@@ -283,7 +284,7 @@ export default function ServicePaymentSuccessScreen() {
                     color: colors.mutedText,
                     lineHeight: 20,
                   }}>
-                    This payment has been charged to your Cerca Account. You can view all your transactions in the history section.
+                    This payment has been processed through ChipiPay and charged to your Cerca Account. You can view all your transactions in the history section.
                   </Text>
                 </View>
               </View>
