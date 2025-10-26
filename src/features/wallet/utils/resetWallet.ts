@@ -14,12 +14,12 @@ import { Alert } from 'react-native';
 export const showWalletResetInstructions = () => {
   Alert.alert(
     'Wallet Network Mismatch',
-    'Your wallet was created on Ethereum Mainnet. To use Base Sepolia, you need to reset your wallet.\n\n' +
+    'Your wallet was created on Ethereum Mainnet. To use Arbitrum Sepolia, you need to reset your wallet.\n\n' +
     'Steps:\n' +
     '1. Log out of the app\n' +
     '2. Clear app data (Settings → Apps → Cerca → Clear Data)\n' +
     '3. Log back in\n' +
-    '4. A new wallet will be created on Base Sepolia\n\n' +
+    '4. A new wallet will be created on Arbitrum Sepolia\n\n' +
     'Note: This is only needed because the wallet was created before network configuration was set.',
     [
       { text: 'OK', style: 'default' }

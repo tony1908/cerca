@@ -1,6 +1,6 @@
 /**
  * NetworkSwitchButton Component
- * Button to manually switch to Base Sepolia network
+ * Button to manually switch to Arbitrum Sepolia network
  */
 
 import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react';
 export default function NetworkSwitchButton() {
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
-  const { switchToBaseSepolia, isOnCorrectNetwork, isSwitching } = useNetworkSwitcher();
+  const { switchToArbitrumSepolia, isOnCorrectNetwork, isSwitching } = useNetworkSwitcher();
   const [isCorrect, setIsCorrect] = useState(true);
 
   // Check network on mount
@@ -30,7 +30,7 @@ export default function NetworkSwitchButton() {
   }, [isOnCorrectNetwork]);
 
   const handleSwitch = async () => {
-    const success = await switchToBaseSepolia();
+    const success = await switchToArbitrumSepolia();
     if (success) {
       setIsCorrect(true);
     }
@@ -67,7 +67,7 @@ export default function NetworkSwitchButton() {
         <>
           <Feather name="alert-circle" size={20} color="#FFFFFF" style={{ marginRight: spacing.sm }} />
           <Text style={{ fontSize: 16, color: '#FFFFFF', fontWeight: '600' }}>
-            Switch to Base Sepolia
+            Switch to Arbitrum Sepolia
           </Text>
         </>
       )}

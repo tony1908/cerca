@@ -11,7 +11,7 @@ import { useViemContractReader } from './useViemContractReader';
 import { useViemWalletClient } from './useViemWalletClient';
 import { loanContractABI } from '@/src/config/loanContractABI';
 import { erc20ABI } from '@/src/config/erc20ABI';
-import { LOAN_CONTRACT, MXN_TOKEN } from '@/src/config/chains.config';
+import { LOAN_CONTRACT, PYUSD_TOKEN } from '@/src/config/chains.config';
 import type { LoanData, TokenInfo } from '../types/loan.types';
 
 export const useLoanContract = () => {
@@ -53,7 +53,7 @@ export const useLoanContract = () => {
 
         console.log('Wallet address:', walletAddress);
         // Hardcode amount to 10 tokens (10 * 10^18 wei)
-        const hardcodedAmount = BigInt('10000000000000000000'); // 10 MXN
+        const hardcodedAmount = BigInt('10000000000000000000'); // 10 PYUSD
 
         // Hardcode maxPaymentDate to 1761361167 (Unix timestamp)
         const hardcodedMaxPaymentDate = BigInt('1761361167');
@@ -136,7 +136,7 @@ export const useLoanContract = () => {
           console.log('🔓 Approving tokens...');
 
           const approveHash = await walletClient.writeContract({
-            address: MXN_TOKEN as `0x${string}`,
+            address: PYUSD_TOKEN as `0x${string}`,
             abi: erc20ABI,
             functionName: 'approve',
             args: [LOAN_CONTRACT as `0x${string}`, amount],
@@ -175,7 +175,7 @@ export const useLoanContract = () => {
           throw new Error('Transaction was rejected');
         }
         if (error.message?.includes('ERC20InsufficientBalance')) {
-          throw new Error('Insufficient MXN token balance');
+          throw new Error('Insufficient PYUSD token balance');
         }
         if (error.message?.includes('ERC20InsufficientAllowance')) {
           throw new Error('Token approval failed. Please try again.');
@@ -188,7 +188,7 @@ export const useLoanContract = () => {
   );
 
   /**
-   * Get user's MXN token balance and allowance (using viem for efficient reads)
+   * Get user's PYUSD token balance and allowance (using viem for efficient reads)
    */
   const getTokenInfo = useCallback(
     async (loanAmount?: bigint): Promise<TokenInfo> => {

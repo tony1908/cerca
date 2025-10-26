@@ -63,7 +63,7 @@ export const useContractProvider = () => {
         if (!switched) {
           throw new Error(
             'Wallet is on wrong network and switch failed. ' +
-            'Please clear app data and log in again to create wallet on Base Sepolia.'
+            'Please clear app data and log in again to create wallet on Arbitrum Sepolia.'
           );
         }
 

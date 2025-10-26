@@ -37,7 +37,7 @@ export default function LoanConfirmScreen() {
     try {
       setTransactionStatus('Preparing transaction...');
 
-      // Convert amount to wei (18 decimals for MXN token)
+      // Convert amount to wei (18 decimals for PYUSD token)
       const amountWei = ethers.parseUnits(loanAmount.toString(), 18);
 
       // Convert max payment date to Unix timestamp

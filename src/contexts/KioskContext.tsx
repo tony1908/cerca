@@ -44,7 +44,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    * Format loan data for UI display
    */
   const formatLoanData = useCallback((loan: LoanData): FormattedLoanData => {
-    const amountInMXN = ethers.formatUnits(loan.amount, 18);
+    const amountInPYUSD = ethers.formatUnits(loan.amount, 18);
     const maxPaymentDate = new Date(Number(loan.maxPaymentDate) * 1000);
     const createdAt = new Date(Number(loan.createdAt) * 1000);
     const now = new Date();
@@ -64,7 +64,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       loan.status === LoanStatus.OVERDUE || loan.status === LoanStatus.DEFAULTED;
 
     return {
-      amount: parseFloat(amountInMXN).toFixed(2),
+      amount: parseFloat(amountInPYUSD).toFixed(2),
       amountWei: loan.amount.toString(),
       maxPaymentDate,
       maxPaymentDateTimestamp: Number(loan.maxPaymentDate),

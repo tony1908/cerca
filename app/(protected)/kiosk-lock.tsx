@@ -333,7 +333,7 @@ export default function KioskLockScreen() {
                 <StepItem number="1" text="Tap 'Pay & Unlock Device' button" colors={colors} />
                 <StepItem
                   number="2"
-                  text="Approve the MXN token payment"
+                  text="Approve the PYUSD token payment"
                   colors={colors}
                 />
                 <StepItem

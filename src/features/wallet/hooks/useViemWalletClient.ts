@@ -9,13 +9,13 @@ import { useCallback, useMemo } from 'react';
 import { createWalletClient, custom, WalletClient, Chain } from 'viem';
 import { useEmbeddedEthereumWallet, getUserEmbeddedEthereumWallet } from '@privy-io/expo';
 import { usePrivy } from '@privy-io/expo';
-import { baseSepolia, DEFAULT_CHAIN_ID } from '@/src/config/chains.config';
+import { arbitrumSepolia, DEFAULT_CHAIN_ID } from '@/src/config/chains.config';
 import { useNetworkSwitcher } from './useNetworkSwitcher';
 
 export const useViemWalletClient = () => {
   const { user } = usePrivy();
   const { wallets } = useEmbeddedEthereumWallet();
-  const { ensureCorrectNetwork, switchToBaseSepolia } = useNetworkSwitcher();
+  const { ensureCorrectNetwork, switchToArbitrumSepolia } = useNetworkSwitcher();
 
   /**
    * Get wallet address from embedded wallet
@@ -62,10 +62,10 @@ export const useViemWalletClient = () => {
       }
 
       console.log(`📍 Current chain: ${currentChainId}`);
-      console.log(`🎯 Target chain: ${DEFAULT_CHAIN_ID} (Base Sepolia)`);
+      console.log(`🎯 Target chain: ${DEFAULT_CHAIN_ID} (Arbitrum Sepolia)`);
 
       if (currentChainId === DEFAULT_CHAIN_ID) {
-        console.log('✅ Already on Base Sepolia!');
+        console.log('✅ Already on Arbitrum Sepolia!');
         console.log('');
         return true;
       }
@@ -76,7 +76,7 @@ export const useViemWalletClient = () => {
       console.log('');
       console.log('🔄 Attempting to switch anyway...');
 
-      const switched = await switchToBaseSepolia();
+      const switched = await switchToArbitrumSepolia();
 
       if (switched) {
         const newChainId = await getCurrentChainId();
@@ -93,7 +93,7 @@ export const useViemWalletClient = () => {
         console.error('   1. Log out');
         console.error('   2. Settings → Apps → Cerca → Storage → Clear Data');
         console.error('   3. Log back in');
-        console.error('   4. New wallet will be created on Base Sepolia');
+        console.error('   4. New wallet will be created on Arbitrum Sepolia');
         console.error('');
         return false;
       }
@@ -101,7 +101,7 @@ export const useViemWalletClient = () => {
       console.error('❌ Error during manual switch:', error);
       return false;
     }
-  }, [getCurrentChainId, switchToBaseSepolia]);
+  }, [getCurrentChainId, switchToArbitrumSepolia]);
 
   /**
    * Create a viem wallet client for transaction signing
@@ -137,7 +137,7 @@ export const useViemWalletClient = () => {
         console.error('');
         console.error('❌❌❌ CRITICAL ERROR: WRONG NETWORK ❌❌❌');
         console.error(`   Your wallet is on chain ${chainIdDecimal} (Ethereum Mainnet)`);
-        console.error(`   But this app requires chain ${DEFAULT_CHAIN_ID} (Base Sepolia)`);
+        console.error(`   But this app requires chain ${DEFAULT_CHAIN_ID} (Arbitrum Sepolia)`);
         console.error('');
         console.error('🔒 Privy embedded wallets are LOCKED to their creation chain.');
         console.error('   Network switching will NOT work for embedded wallets.');
@@ -146,14 +146,14 @@ export const useViemWalletClient = () => {
         console.error('   1. Log out of the app');
         console.error('   2. Go to: Settings → Apps → Cerca → Storage → Clear Data');
         console.error('   3. Log back in');
-        console.error('   4. A NEW wallet will be created on Base Sepolia');
+        console.error('   4. A NEW wallet will be created on Arbitrum Sepolia');
         console.error('');
         console.error('⚠️  You MUST do this before you can use loan features!');
         console.error('');
 
         throw new Error(
           `WRONG NETWORK: Wallet is on chain ${chainIdDecimal}, needs chain ${DEFAULT_CHAIN_ID}. ` +
-          `Clear app data and log in again to create wallet on Base Sepolia.`
+          `Clear app data and log in again to create wallet on Arbitrum Sepolia.`
         );
       }
 
@@ -161,11 +161,11 @@ export const useViemWalletClient = () => {
       // This is Privy's recommended pattern for React Native
       const walletClient = createWalletClient({
         account: address,
-        chain: baseSepolia as Chain,
+        chain: arbitrumSepolia as Chain,
         transport: custom(provider),
       });
 
-      console.log('✅ Viem wallet client created for Base Sepolia');
+      console.log('✅ Viem wallet client created for Arbitrum Sepolia');
       console.log(`✅ Wallet ready on chain ${chainIdDecimal}`);
       return walletClient;
     } catch (error) {

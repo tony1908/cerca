@@ -1,6 +1,6 @@
 /**
- * ERC20 Token ABI for Base Sepolia
- * MXN Token Address: 0xEDa089E2692d85afdD6bF72673DEF1b96024c569
+ * ERC20 Token ABI for Arbitrum Sepolia
+ * PYUSD Token Address: 0x637A1259C6afd7E3AdF63993cA7E58BB438aB1B1
  */
 
 export const erc20ABI = [

@@ -6,18 +6,18 @@
 
 import { useCallback } from 'react';
 import { createPublicClient, http, formatUnits } from 'viem';
-import { baseSepolia } from '@/src/config/chains.config';
-import { LOAN_CONTRACT, MXN_TOKEN, LoanStatus } from '@/src/config/chains.config';
+import { arbitrumSepolia } from '@/src/config/chains.config';
+import { LOAN_CONTRACT, PYUSD_TOKEN, LoanStatus } from '@/src/config/chains.config';
 import { loanContractABI } from '@/src/config/loanContractABI';
 import { erc20ABI } from '@/src/config/erc20ABI';
 import type { LoanData, TokenInfo } from '../types/loan.types';
 
 /**
- * Create a public client for reading contract data on Base Sepolia
+ * Create a public client for reading contract data on Arbitrum Sepolia
  * This is more efficient than using a provider for read operations
  */
 const publicClient = createPublicClient({
-  chain: baseSepolia,
+  chain: arbitrumSepolia,
   transport: http(),
 });
 
@@ -79,19 +79,19 @@ export const useViemContractReader = () => {
   );
 
   /**
-   * Get user's MXN token balance
+   * Get user's PYUSD token balance
    */
   const getTokenBalance = useCallback(
     async (address: string): Promise<bigint> => {
       try {
         const balance = await publicClient.readContract({
-          address: MXN_TOKEN as `0x${string}`,
+          address: PYUSD_TOKEN as `0x${string}`,
           abi: erc20ABI,
           functionName: 'balanceOf',
           args: [address as `0x${string}`],
         });
 
-        console.log('💰 Token balance:', formatUnits(balance as bigint, 18), 'MXN');
+        console.log('💰 Token balance:', formatUnits(balance as bigint, 18), 'PYUSD');
         return balance as bigint;
       } catch (error) {
         console.error('❌ Error reading token balance:', error);
@@ -108,13 +108,13 @@ export const useViemContractReader = () => {
     async (address: string): Promise<bigint> => {
       try {
         const allowance = await publicClient.readContract({
-          address: MXN_TOKEN as `0x${string}`,
+          address: PYUSD_TOKEN as `0x${string}`,
           abi: erc20ABI,
           functionName: 'allowance',
           args: [address as `0x${string}`, LOAN_CONTRACT as `0x${string}`],
         });
 
-        console.log('🔓 Token allowance:', formatUnits(allowance as bigint, 18), 'MXN');
+        console.log('🔓 Token allowance:', formatUnits(allowance as bigint, 18), 'PYUSD');
         return allowance as bigint;
       } catch (error) {
         console.error('❌ Error reading token allowance:', error);
@@ -163,7 +163,7 @@ export const useViemContractReader = () => {
         functionName: 'getContractBalance',
       });
 
-      console.log('🏦 Contract balance:', formatUnits(balance as bigint, 18), 'MXN');
+      console.log('🏦 Contract balance:', formatUnits(balance as bigint, 18), 'PYUSD');
       return balance as bigint;
     } catch (error) {
       console.error('❌ Error reading contract balance:', error);

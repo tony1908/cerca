@@ -1,6 +1,6 @@
 /**
- * Loan Contract ABI for Base Sepolia
- * Contract Address: 0x7edb981b706f2e7C5d37D0B4dBA13c2170E6f5c9
+ * Loan Contract ABI for Arbitrum Sepolia
+ * Contract Address: 0xd880112AeC1307eBE2886e4fB0daec82564f3a65
  */
 
 export const loanContractABI = [

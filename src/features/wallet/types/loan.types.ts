@@ -9,7 +9,7 @@ import { LoanStatus } from '@/src/config/chains.config';
  * Loan data structure returned from smart contract
  */
 export interface LoanData {
-  amount: bigint;              // Loan amount in wei (MXN tokens)
+  amount: bigint;              // Loan amount in wei (PYUSD tokens)
   maxPaymentDate: bigint;      // Unix timestamp for max payment date
   status: LoanStatus;          // Loan status enum (0-3)
   createdAt: bigint;           // Unix timestamp when loan was created
@@ -45,7 +45,7 @@ export interface LoanRequestParams {
  * Loan calculator input (from UI)
  */
 export interface LoanCalculatorInput {
-  amount: number;              // Amount in MXN (e.g., 7000)
+  amount: number;              // Amount in PYUSD (e.g., 7000)
   termMonths: number;          // Loan term in months
   paymentDate: Date;           // Selected payment date
 }

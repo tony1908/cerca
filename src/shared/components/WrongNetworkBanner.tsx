@@ -63,7 +63,7 @@ export default function WrongNetworkBanner() {
           Wrong Network Detected
         </Text>
         <Text style={{ fontSize: 12, color: '#FFFFFF', opacity: 0.9 }}>
-          Wallet on Chain {currentChainId}, need Base Sepolia (84532)
+          Wallet on Chain {currentChainId}, need Arbitrum Sepolia (421614)
         </Text>
       </View>
       <TouchableOpacity

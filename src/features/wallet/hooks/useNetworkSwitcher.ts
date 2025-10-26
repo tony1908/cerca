@@ -16,14 +16,14 @@ export const useNetworkSwitcher = () => {
   const [isSwitching, setIsSwitching] = useState(false);
 
   /**
-   * Attempt to switch embedded wallet to Base Sepolia
+   * Attempt to switch embedded wallet to Arbitrum Sepolia
    * React Native pattern from: https://docs.privy.io/wallets/using-wallets/ethereum/switch-chain#react-native
    *
    * IMPORTANT: Privy embedded wallets are chain-locked at creation.
    * If the wallet was created on a different chain, this will fail.
    * Solution: Delete wallet and recreate by clearing app data and logging in again.
    */
-  const switchToBaseSepolia = useCallback(async (): Promise<boolean> => {
+  const switchToArbitrumSepolia = useCallback(async (): Promise<boolean> => {
     try {
       const wallet = wallets?.[0];
       if (!wallet) {
@@ -32,7 +32,7 @@ export const useNetworkSwitcher = () => {
       }
 
       setIsSwitching(true);
-      console.log('🔄 Attempting to switch to Base Sepolia (Chain ID: 84532)...');
+      console.log('🔄 Attempting to switch to Arbitrum Sepolia (Chain ID: 421614)...');
 
       const provider = await wallet.getProvider();
       if (!provider) {
@@ -40,7 +40,7 @@ export const useNetworkSwitcher = () => {
         return false;
       }
 
-      // Convert chain ID to hex string (0x14a34 = 84532)
+      // Convert chain ID to hex string (0x66eee = 421614)
       const chainIdHex = `0x${DEFAULT_CHAIN_ID.toString(16)}`;
 
       // Attempt network switch using React Native pattern
@@ -54,7 +54,7 @@ export const useNetworkSwitcher = () => {
       const currentChainIdDecimal = parseInt(currentChainId, 16);
 
       if (currentChainIdDecimal === DEFAULT_CHAIN_ID) {
-        console.log('✅ Successfully switched to Base Sepolia');
+        console.log('✅ Successfully switched to Arbitrum Sepolia');
         return true;
       } else {
         console.error('❌ Network switch call succeeded but wallet is still on wrong chain');
@@ -67,7 +67,7 @@ export const useNetworkSwitcher = () => {
         console.error('   1. Log out of the app');
         console.error('   2. Clear app data: Settings → Apps → Cerca → Storage → Clear Data');
         console.error('   3. Log back in');
-        console.error('   4. A new wallet will be created on Base Sepolia');
+        console.error('   4. A new wallet will be created on Arbitrum Sepolia');
         console.error('');
         return false;
       }
@@ -108,7 +108,7 @@ export const useNetworkSwitcher = () => {
   }, [wallets]);
 
   /**
-   * Auto-switch to Base Sepolia if on wrong network
+   * Auto-switch to Arbitrum Sepolia if on wrong network
    */
   const ensureCorrectNetwork = useCallback(async (): Promise<boolean> => {
     const isCorrect = await isOnCorrectNetwork();
@@ -117,11 +117,11 @@ export const useNetworkSwitcher = () => {
     }
 
     console.log('⚠️  Wrong network detected, switching...');
-    return await switchToBaseSepolia();
-  }, [isOnCorrectNetwork, switchToBaseSepolia]);
+    return await switchToArbitrumSepolia();
+  }, [isOnCorrectNetwork, switchToArbitrumSepolia]);
 
   return {
-    switchToBaseSepolia,
+    switchToArbitrumSepolia,
     isOnCorrectNetwork,
     ensureCorrectNetwork,
     isSwitching,

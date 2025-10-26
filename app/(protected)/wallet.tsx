@@ -228,7 +228,7 @@ export default function WalletScreen() {
                   textAlign: 'center',
                   lineHeight: 20,
                 }}>
-                  Scan this QR code or share your wallet address to receive PYUSDC deposits
+                  Scan this QR code or share your wallet address to receive PYUSD deposits
                 </Text>
               </View>
             </View>

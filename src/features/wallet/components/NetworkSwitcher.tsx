@@ -1,7 +1,7 @@
 /**
  * NetworkSwitcher Component
  * Provides manual network switching functionality
- * Displays current network and allows switching to Base Sepolia
+ * Displays current network and allows switching to Arbitrum Sepolia
  */
 
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
@@ -40,13 +40,13 @@ export default function NetworkSwitcher() {
     if (success) {
       Alert.alert(
         '✅ Network Switched',
-        'Successfully switched to Base Sepolia!',
+        'Successfully switched to Arbitrum Sepolia!',
         [{ text: 'OK', onPress: loadCurrentChain }]
       );
     } else {
       Alert.alert(
         '❌ Switch Failed',
-        'Your wallet is chain-locked to Ethereum Mainnet.\n\nTo use Base Sepolia:\n1. Log out\n2. Clear app data\n3. Log back in\n\nA new wallet will be created on Base Sepolia.',
+        'Your wallet is chain-locked to Ethereum Mainnet.\n\nTo use Arbitrum Sepolia:\n1. Log out\n2. Clear app data\n3. Log back in\n\nA new wallet will be created on Arbitrum Sepolia.',
         [
           { text: 'OK', style: 'cancel' },
           { text: 'Check Console Logs', onPress: () => console.log('See detailed logs above') }
@@ -61,7 +61,7 @@ export default function NetworkSwitcher() {
   const getChainName = (chainId: number | null): string => {
     if (chainId === null) return 'Unknown';
     if (chainId === 1) return 'Ethereum Mainnet';
-    if (chainId === 84532) return 'Base Sepolia';
+    if (chainId === 421614) return 'Arbitrum Sepolia';
     return `Chain ${chainId}`;
   };
 
@@ -150,7 +150,7 @@ export default function NetworkSwitcher() {
             color: '#FF6666',
             lineHeight: 18,
           }}>
-            ⚠️ Wrong network! This app requires Base Sepolia (Chain ID: {DEFAULT_CHAIN_ID}).
+            ⚠️ Wrong network! This app requires Arbitrum Sepolia (Chain ID: {DEFAULT_CHAIN_ID}).
           </Text>
         </View>
       )}
@@ -166,7 +166,7 @@ export default function NetworkSwitcher() {
             fontSize: 13,
             color: '#66BB6A',
           }}>
-            ✅ Connected to Base Sepolia
+            ✅ Connected to Arbitrum Sepolia
           </Text>
         </View>
       )}
@@ -195,7 +195,7 @@ export default function NetworkSwitcher() {
                 fontSize: 14,
                 fontWeight: '600',
               }}>
-                Switch to Base Sepolia
+                Switch to Arbitrum Sepolia
               </Text>
             </>
           )}
